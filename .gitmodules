@@ -1,0 +1,6 @@
+[submodule "CS_WPF_Lab9_Rental_Housing.Business"]
+	path = CS_WPF_Lab9_Rental_Housing.Business
+	url = https://github.com/AlexPol1ak/CS_WPF_Lab9_Rental_Housing.Business
+[submodule "CS_WPF_Lab9_Rental_Housing.DAL"]
+	path = CS_WPF_Lab9_Rental_Housing.DAL
+	url = https://github.com/AlexPol1ak/CS_WPF_Lab9_Rental_Housing.DAL

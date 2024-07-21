@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using CS_WPF_Lab9_Rental_Housing.Business.Infastructure;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,7 @@ namespace CS_WPF_Lab9_Rental_Housing
         public MainWindow()
         {
             InitializeComponent();
+            var fb = new  ManagersFactary("DefaultConnection");
         }
     }
 }
