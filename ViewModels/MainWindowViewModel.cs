@@ -12,7 +12,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        ManagersFactary factory;
+        ManagersFactory factory;
         HouseManager houseManager;
         ApartmentManager apartmentManager;
         PhotoManager photoManager;
@@ -27,7 +27,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         public MainWindowViewModel()
         {
-            factory = new ManagersFactary("DefaultConnection");
+            factory = new ManagersFactory("DefaultConnection");
             houseManager = factory.GetHouseManager();
             apartmentManager = factory.GetApartmentManager();
             photoManager = factory.GetPhotoManager();

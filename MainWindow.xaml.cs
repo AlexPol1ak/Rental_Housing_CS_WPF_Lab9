@@ -1,4 +1,5 @@
 ﻿using CS_WPF_Lab9_Rental_Housing.Business.Infastructure;
+using CS_WPF_Lab9_Rental_Housing.Business.Managers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,10 +18,20 @@ namespace CS_WPF_Lab9_Rental_Housing
     /// </summary>
     public partial class MainWindow : Window
     {
+        ManagersFactory factory;
+        HouseManager houseManager;
+        ApartmentManager apartmentManager;
+        PhotoManager photoManager;
+
         public MainWindow()
         {
             InitializeComponent();
-            var fb = new  ManagersFactary("DefaultConnection");
+            factory = new  ManagersFactory("DefaultConnection");
+            houseManager = factory.GetHouseManager();
+            apartmentManager = factory.GetApartmentManager();
+            photoManager = factory.GetPhotoManager();
+
+            DbInitData.SetupData(factory);
         }
     }
 }
