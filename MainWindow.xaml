@@ -5,8 +5,120 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Учет жилых помещений" Height="500" Width="800">
+    <Window.Resources>
+        <local:GridViewColumnWidthConverter x:Key="WidthConverter"/>
+    </Window.Resources>
+    <Grid Name="Grid_Main" Background="{StaticResource Gray_LGBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox x:Name="GP_Houses" Grid.Row="0" Grid.Column="0"
+                  Style="{StaticResource GroupBox_Style}">
+            <GroupBox.Header>
+                <TextBlock Text="Дома" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
+            </GroupBox.Header>
+
+            <ListView Name="ListView_Houses">
+                <ListView.View>
+                    <GridView>
+                        
+                        <GridViewColumn Width="80">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="Город"
+                                           Style=
+                                   "{StaticResource ListViewColumnHeaderTextstyle}"
+                                 />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        
+                        <GridViewColumn Width="100">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="Улица" 
+                                               Style= 
+                                         "{StaticResource ListViewColumnHeaderTextstyle}"/>
+                                </GridViewColumn.Header>
+                        </GridViewColumn>
+                        
+                        <GridViewColumn Width="60">
+                            <GridViewColumn.Header>
+                                <TextBlock Style=
+                                           "{StaticResource ListViewColumnHeaderTextstyle}"
+                                >
+                                    Номер
+                                   <LineBreak/>
+                                    дома
+                                </TextBlock>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        
+                    </GridView>
+                </ListView.View>
+                
+            </ListView>
+
+        </GroupBox>
+
+        <GroupBox Name="GP_Apartments" Grid.Row="0" Grid.Column="1" 
+                  Style="{StaticResource GroupBox_Style}">
+            <GroupBox.Header>
+                <TextBlock Text="Квартиры" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
+            </GroupBox.Header>
+
+            <ListView Name="ListView_Apartments">
+                <ListView.View>
+                    <GridView>
+
+                        <GridViewColumn Width="80">
+                            <GridViewColumn.Header>
+                                <TextBlock
+                                    Style=
+                                    "{StaticResource ListViewColumnHeaderTextstyle}"
+                                >
+                                   Номер <LineBreak/> кваритры
+                                </TextBlock>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+
+                        <GridViewColumn Width="90">
+                            <GridViewColumn.Header>
+                                <TextBlock Style= 
+                                      "{StaticResource ListViewColumnHeaderTextstyle}">
+                                    Количество<LineBreak/>комнат
+                                </TextBlock>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+
+                        <GridViewColumn Width="70">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="Площадь"
+                                    Style= "{StaticResource ListViewColumnHeaderTextstyle}"
+                                 />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+
+                    </GridView>
+                </ListView.View>
+
+            </ListView>
+
+        </GroupBox>
+
+        <GroupBox Name="GP_Info" Grid.Row="0" Grid.Column="2"
+                  Style="{StaticResource GroupBox_Style}">
+                <GroupBox.Header>
+                    <TextBlock Text="Инофрмация" 
+                               Style="{StaticResource GroupBoxHeaderTextStyle}"/>
+                </GroupBox.Header>
+
+            </GroupBox>
 
     </Grid>
 </Window>
