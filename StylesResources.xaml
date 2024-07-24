@@ -28,7 +28,8 @@
            BasedOn="{StaticResource GroupBoxHeaderTextStyle}">
         <Setter Property="TextBlock.FontSize" Value="12"/>
         <Setter Property="TextBlock.FontStyle" Value="Italic"/>
-
+        <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
     </Style>
 
 </ResourceDictionary>
