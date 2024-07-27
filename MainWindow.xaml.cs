@@ -1,5 +1,6 @@
 ﻿using CS_WPF_Lab9_Rental_Housing.Business.Infastructure;
 using CS_WPF_Lab9_Rental_Housing.Business.Managers;
+using CS_WPF_Lab9_Rental_Housing.ViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Text;
 using System.Windows;
@@ -19,20 +20,14 @@ namespace CS_WPF_Lab9_Rental_Housing
     /// </summary>
     public partial class MainWindow : Window
     {
-        ManagersFactory factory;
-        HouseManager houseManager;
-        ApartmentManager apartmentManager;
-        PhotoManager photoManager;
+        MainWindowViewModel mainWindowViewModel; 
 
         public MainWindow()
         {
             InitializeComponent();
-            factory = new  ManagersFactory("DefaultConnection");
-            houseManager = factory.GetHouseManager();
-            apartmentManager = factory.GetApartmentManager();
-            photoManager = factory.GetPhotoManager();
+            mainWindowViewModel = new MainWindowViewModel();
 
-            DbInitData.SetupData(factory);
+            this.DataContext = mainWindowViewModel;
         }
 
         private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)

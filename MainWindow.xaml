@@ -10,7 +10,7 @@
     <Grid Name="Grid_Main" Background="{StaticResource Gray_LGBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -20,17 +20,23 @@
         
         <!--#region HOUSES VIEW-->
         <GroupBox x:Name="GP_Houses" Grid.Row="0" Grid.Column="0"
-                  Style="{StaticResource GroupBox_Style}">
+                  Style="{StaticResource GroupBoxStyle}">
             <GroupBox.Header>
                 <TextBlock Text="Дома" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
             </GroupBox.Header>
 
-            <ListView Name="ListView_Houses" SizeChanged="ListView_SizeChanged">
+            <ListView Name="ListView_Houses" SizeChanged="ListView_SizeChanged"
+                      ItemsSource="{Binding Houses}" 
+                      Style="{StaticResource ListViewStyle}"
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                      >
                 <ListView.View>
                     <GridView>
                         
                         <!--CITY COLUMN HEADER-->
-                        <GridViewColumn Width= "85">
+                        <GridViewColumn Width= "85" 
+                                        DisplayMemberBinding="{Binding Path=City}"
+                                        >
                             <GridViewColumn.Header>
                                 <TextBlock Text="Город"
                                            Style=
@@ -41,7 +47,7 @@
                         </GridViewColumn>
 
                         <!--STREET COLUMN HEADER-->
-                        <GridViewColumn Width="90">
+                        <GridViewColumn Width="90" DisplayMemberBinding="{Binding Path=Street}">
                             <GridViewColumn.Header>
                                 <TextBlock Text="Улица" 
                                                Style= 
@@ -50,7 +56,7 @@
                         </GridViewColumn>
 
                         <!--HOUSE NUMBER COLUMN HEADER-->
-                        <GridViewColumn Width="60">
+                        <GridViewColumn Width="60" DisplayMemberBinding="{Binding Path=Number}">
                             <GridViewColumn.Header>
                                 <TextBlock Style=
                                            "{StaticResource ListViewColumnHeaderTextstyle}"
@@ -73,17 +79,23 @@
         <!--#region APARTMENTS VIEW-->
         
         <GroupBox Name="GP_Apartments" Grid.Row="0" Grid.Column="1" 
-                  Style="{StaticResource GroupBox_Style}">
+                  Style="{StaticResource GroupBoxStyle}">
             <GroupBox.Header>
                 <TextBlock Text="Квартиры" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
             </GroupBox.Header>
 
-            <ListView Name="ListView_Apartments" SizeChanged="ListView_SizeChanged">
+            <ListView Name="ListView_Apartments" SizeChanged="ListView_SizeChanged"
+                      ItemsSource="{Binding Apartments}"
+                      Style="{StaticResource ListViewStyle}"
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                      >
                 <ListView.View>
                     <GridView>
 
                         <!--NUMBER APART. COLUMN HEADER-->
-                        <GridViewColumn Width="80">
+                        <GridViewColumn Width="80"
+                                        DisplayMemberBinding="{Binding Path=Number}"
+                                        >
                             <GridViewColumn.Header>
                                 <TextBlock
                                     Style=
@@ -95,7 +107,9 @@
                         </GridViewColumn>
 
                         <!-- NUMBER ROOMS COLUMN HEADER-->
-                        <GridViewColumn Width="90">
+                        <GridViewColumn Width="90" 
+                                        DisplayMemberBinding="{Binding Path=CountRooms}"
+                                        >
                             <GridViewColumn.Header>
                                 <TextBlock Style= 
                                       "{StaticResource ListViewColumnHeaderTextstyle}">
@@ -105,7 +119,9 @@
                         </GridViewColumn>
 
                         <!-- AREA COLUMN HEADER-->
-                        <GridViewColumn Width="70">
+                        <GridViewColumn Width="70" 
+                                        DisplayMemberBinding="{Binding Area}"
+                                        >
                             <GridViewColumn.Header>
                                 <TextBlock Text="Площадь"
                                     Style= "{StaticResource ListViewColumnHeaderTextstyle}"
@@ -123,7 +139,7 @@
 
         <!--region DETAIL INFO VIEW-->
         <GroupBox Name="GP_Info" Grid.Row="0" Grid.Column="2"
-                  Style="{StaticResource GroupBox_Style}">
+                  Style="{StaticResource GroupBoxStyle}">
                 <GroupBox.Header>
                     <TextBlock Text="Инофрмация" 
                                Style="{StaticResource GroupBoxHeaderTextStyle}"/>

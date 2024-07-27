@@ -12,18 +12,29 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        ManagersFactory factory;
-        HouseManager houseManager;
-        ApartmentManager apartmentManager;
-        PhotoManager photoManager;
+        private ManagersFactory factory;
+        private HouseManager houseManager;
+        private ApartmentManager apartmentManager;
+        private PhotoManager photoManager;
 
         public ObservableCollection<House> Houses { get; set; }
-        public ObservableCollection<Apartment> Apartment { get; set; }
+        public ObservableCollection<Apartment> Apartments { get; set; }
         public ObservableCollection<Photo> Photos { get; set; }
 
-        public string Title { get; set; }
-
         private House _selectedHouses;
+        private House _selectedApartment;
+
+        public House SelectedHouses
+        {
+            get { return _selectedHouses; }
+            set { Set(ref _selectedHouses, value); }
+        }
+
+        public House SelectedApartment
+        {
+            get { return _selectedApartment; }
+            set { Set(ref _selectedApartment, value); }
+        }
 
         public MainWindowViewModel()
         {
@@ -31,19 +42,13 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             houseManager = factory.GetHouseManager();
             apartmentManager = factory.GetApartmentManager();
             photoManager = factory.GetPhotoManager();
-            Houses= new ObservableCollection<House>();
-            Apartment= new ObservableCollection<Apartment>();
-            Photos= new ObservableCollection<Photo>();
-            
-        }
 
-        public House SelectedHouses
-        {
-            get { return _selectedHouses; }
-            set 
-            {
-                Set(ref _selectedHouses, value);
-            }
+            DbInitData.SetupData(factory);
+
+            Houses = new ObservableCollection<House>(houseManager.GetAllHouses());
+            Apartments = new ObservableCollection<Apartment>();
+            Photos = new ObservableCollection<Photo>(); 
+          
         }
     }
 }

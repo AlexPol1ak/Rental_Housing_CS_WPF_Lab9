@@ -1,29 +1,39 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
-    <Style x:Key="GroupBox_Style" TargetType="GroupBox">
-        <Setter Property="GroupBox.Margin" Value="5"/>
-    </Style>
 
+    <!--
+    The base text for the column headers of the key screen. 
+    (Дома, Кваритры, Инофрмация.
+    -->
     <Style x:Key="GroupBoxHeaderTextStyle">
         <Setter Property="TextBlock.FontSize" Value="18"/>
         <Setter Property="TextBlock.FontFamily" Value="Century Schoolbook"/>
         <Setter Property="TextBlock.FontWeight" Value="Bold"/>
     </Style>
 
-    <Style TargetType="ListView">
-        <Setter Property="Background" Value="Transparent"/>
-    </Style>
-    
-    <Style TargetType="ListViewItem">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
+    <!--Style for GroupBoxes.-->
+    <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
+        <Setter Property="GroupBox.Margin" Value="5"/>
     </Style>
 
+    <!--Style for ListViews-->
+    <Style x:Key="ListViewStyle"  TargetType="ListView">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!--Style for ListView elements (Displayed lists).-->
+    <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <!--Style for columns in ListView.-->
     <Style TargetType="GridViewColumnHeader">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
+    <!--Style for text in columns headers.-->
     <Style x:Key="ListViewColumnHeaderTextstyle"
            BasedOn="{StaticResource GroupBoxHeaderTextStyle}">
         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -31,5 +41,6 @@
         <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
         <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
     </Style>
+
 
 </ResourceDictionary>
