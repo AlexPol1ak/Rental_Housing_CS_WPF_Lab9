@@ -144,6 +144,18 @@
                     <TextBlock Text="Инофрмация" 
                                Style="{StaticResource GroupBoxHeaderTextStyle}"/>
                 </GroupBox.Header>
+            
+            <Grid Name="Grid_DetailInfo">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.3*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Name="Tb_DetailInfo" Grid.Row="0" 
+                           Style="{StaticResource TextBoxDetailInfoStyle}">
+                    Детальная инофрмация
+                </TextBlock>
+                <Image Name="Image_ApartPhoto"/>
+            </Grid>
 
             </GroupBox>
         <!--#endregion-->

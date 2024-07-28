@@ -45,7 +45,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
             DbInitData.SetupData(factory);
 
-            Houses = new ObservableCollection<House>(houseManager.GetAllHouses());
+            Houses = new ObservableCollection<House>(houseManager.GetAllHouses(true));
             Apartments = new ObservableCollection<Apartment>();
             Photos = new ObservableCollection<Photo>(); 
           
