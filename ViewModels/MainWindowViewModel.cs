@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
+using System.Windows.Input;
+using CS_WPF_Lab9_Rental_Housing.Commands;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -23,6 +25,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         private House _selectedHouses;
         private House _selectedApartment;
+        private string _detailInfo;
 
         public House SelectedHouses
         {
@@ -36,6 +39,12 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             set { Set(ref _selectedApartment, value); }
         }
 
+        public string DetailInfo
+        {
+            get => _detailInfo;
+            set { Set(ref _detailInfo, value); }
+        }       
+
         public MainWindowViewModel()
         {
             factory = new ManagersFactory("DefaultConnection");
@@ -48,7 +57,31 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             Houses = new ObservableCollection<House>(houseManager.GetAllHouses(true));
             Apartments = new ObservableCollection<Apartment>();
             Photos = new ObservableCollection<Photo>(); 
-          
+         
         }
+
+        #region Commands
+
+        #region Select house
+        private ICommand _selectHouseCommand;
+        public ICommand SelectHouseCommand => _selectHouseCommand ??=
+            new RelayCommnad(SelectHouseExecuted);
+
+        private void SelectHouseExecuted(object obj)
+        {
+            House h = SelectedHouses;
+
+            Apartments.Clear();     
+            if(h != null && h.Apartments != null && h.Apartments.Count > 0)
+            {
+                foreach(Apartment ap in  h.Apartments) Apartments.Add(ap);
+                DetailInfo = h.ToString(full: true);
+            }
+            else { DetailInfo = string.Empty; }
+        }
+        #endregion
+
+
+        #endregion
     }
 }

@@ -77,4 +77,8 @@
     <Folder Include="Infastructure\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+  </ItemGroup>
+
 </Project>
