@@ -24,8 +24,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         public ObservableCollection<Photo> Photos { get; set; }
 
         private House _selectedHouses;
-        private House _selectedApartment;
-        private string _detailInfo;
+        private Apartment? _selectedApartment = null;
+        private string _detailInfo = string.Empty;
+        private string? _currentPhoto = null;
 
         public House SelectedHouses
         {
@@ -33,7 +34,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             set { Set(ref _selectedHouses, value); }
         }
 
-        public House SelectedApartment
+        public Apartment? SelectedApartment
         {
             get { return _selectedApartment; }
             set { Set(ref _selectedApartment, value); }
@@ -43,7 +44,12 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         {
             get => _detailInfo;
             set { Set(ref _detailInfo, value); }
-        }       
+        }
+        public string? CurrentPhoto 
+        { 
+            get => _currentPhoto;
+            set { Set(ref _currentPhoto, value); }
+        }
 
         public MainWindowViewModel()
         {
@@ -65,19 +71,45 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         #region Select house
         private ICommand _selectHouseCommand;
         public ICommand SelectHouseCommand => _selectHouseCommand ??=
-            new RelayCommnad(SelectHouseExecuted);
+            new RelayCommand(SelectHouseExecuted);
 
         private void SelectHouseExecuted(object obj)
         {
             House h = SelectedHouses;
 
-            Apartments.Clear();     
+            Apartments.Clear();  
+            Photos.Clear();
+            CurrentPhoto = null;
             if(h != null && h.Apartments != null && h.Apartments.Count > 0)
             {
                 foreach(Apartment ap in  h.Apartments) Apartments.Add(ap);
                 DetailInfo = h.ToString(full: true);
             }
             else { DetailInfo = string.Empty; }
+            SelectedApartment = null;           
+        }
+        #endregion
+        #region Select Apartment
+        private ICommand _selectApartmentCommand;
+        public ICommand SelectApartmentCommand => _selectApartmentCommand ??=
+            new RelayCommand(SelectApartmentExecuted);
+
+        private void SelectApartmentExecuted(object obj)
+        {
+            if(SelectedApartment == null)
+            {
+                DetailInfo = string.Empty;
+            }
+            else
+            {
+                apartmentManager.LoadPhotos(SelectedApartment);
+                DetailInfo = SelectedApartment.ToString(full:true);
+                Photos.Clear();
+                CurrentPhoto = null;
+                foreach(Photo photo in SelectedApartment.Photos) Photos.Add(photo);
+                if (Photos.Count > 0) CurrentPhoto = Photos[0].PhotoName;
+            }
+
         }
         #endregion
 

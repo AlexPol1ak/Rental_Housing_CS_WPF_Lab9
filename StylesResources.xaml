@@ -42,11 +42,13 @@
         <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
     </Style>
 
+    <!--Style for TextBlock detailed information about the record.-->
     <Style x:Key="TextBoxDetailInfoStyle"  BasedOn="{StaticResource GroupBoxHeaderTextStyle}">
         <Setter Property="TextBlock.Margin" Value="3"/>
-        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontSize" Value="14"/>
         <Setter Property="TextBlock.Foreground" Value="black"/>
         <Setter Property="TextBlock.FontWeight" Value="UltraLight"/>
+        <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
     </Style>
 
 </ResourceDictionary>
