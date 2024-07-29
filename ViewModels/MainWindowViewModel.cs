@@ -9,6 +9,8 @@ using System.Collections.ObjectModel;
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
 using System.Windows.Input;
 using CS_WPF_Lab9_Rental_Housing.Commands;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -26,7 +28,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         private House _selectedHouses;
         private Apartment? _selectedApartment = null;
         private string _detailInfo = string.Empty;
-        private string? _currentPhoto = null;
+        private Photo? _currentPhoto = null;
 
         public House SelectedHouses
         {
@@ -45,7 +47,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             get => _detailInfo;
             set { Set(ref _detailInfo, value); }
         }
-        public string? CurrentPhoto 
+        public Photo? CurrentPhoto 
         { 
             get => _currentPhoto;
             set { Set(ref _currentPhoto, value); }
@@ -89,6 +91,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             SelectedApartment = null;           
         }
         #endregion
+
         #region Select Apartment
         private ICommand _selectApartmentCommand;
         public ICommand SelectApartmentCommand => _selectApartmentCommand ??=
@@ -107,10 +110,53 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 Photos.Clear();
                 CurrentPhoto = null;
                 foreach(Photo photo in SelectedApartment.Photos) Photos.Add(photo);
-                if (Photos.Count > 0) CurrentPhoto = Photos[0].PhotoName;
+                if (Photos.Count > 0) CurrentPhoto = Photos[0];
             }
 
         }
+        #endregion
+
+        #region PhotoNavigation
+        private ICommand _previousPhotoCommand;
+        private ICommand _nextPhotoCommand;
+
+        public ICommand PreviousPhotoCommand => _previousPhotoCommand ??= new
+            RelayCommand(
+                // Sets the previous photo in the collection as the current photo
+                (id) => 
+                { 
+                    int index = Photos.IndexOf(CurrentPhoto!);
+                    CurrentPhoto = Photos[--index];
+                },
+                // Checks whether the command can be executed.
+                // Are there any previous photos in the collection?
+                (id) =>
+                {
+                    if (CurrentPhoto != null && Photos.Count > 0 && Photos.IndexOf(CurrentPhoto) - 1 >= 0)
+                        return true;
+                    else return false;
+                }
+            );
+
+        public ICommand NextPhotoCommand => _nextPhotoCommand ??= new
+            RelayCommand(
+                (id) =>
+                {
+                    //Sets the next photo following the current one in the collection as the current photo.
+                    int index = Photos.IndexOf(CurrentPhoto!);
+                    CurrentPhoto = Photos[++index];
+                },
+                (id) =>
+                {
+                    // Checks if the command can be executed.
+                    // Is the current photo not the last photo in the collection?
+                    if (CurrentPhoto != null && Photos.Count > 0 && Photos.IndexOf(CurrentPhoto) + 1 <= Photos.Count - 1)
+                        return true;
+                    else return false;
+                }
+
+             );
+
         #endregion
 
 
