@@ -59,9 +59,20 @@
 
     <!--Style for photo navigation buttons.-->
     <Style x:Key="ButtonPhotoNavigationStyle" TargetType="Button">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Width" Value="30"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Opacity" Value="0.4"/>
+        <Style.Triggers>
+            <!--The button is visually invisible when turned off.-->
+            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter Property="Opacity" Value="0"/>
+            </DataTrigger>
+            <!--The button is visually visible when enabled.-->
+            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Opacity" Value="0.7"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

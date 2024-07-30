@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mdc="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing"
         xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure"
         mc:Ignorable="d"
@@ -40,7 +41,8 @@
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SelectHouseCommand}"
-                                               CommandParameter="{Binding SelectedHouses.HouseId}"/>
+                                               CommandParameter="{Binding  
+                                                SelectedHouses.HouseId}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
@@ -172,37 +174,52 @@
                     <RowDefinition Height="0.9*"/>
                 </Grid.RowDefinitions>
 
+                <!--
+                Processing of events of cursor entry into the grid of detailed 
+                information and cursor exit from the grid 
+                (Commands performs displaying of buttons for scrolling through photos).
+                -->
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <i:InvokeCommandAction 
+                            Command="{Binding GridDetailInfoMouseEnterCommand}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeave">
+                        <i:InvokeCommandAction 
+                            Command="{Binding GridDetailInfoMouseLeaveCommand }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <TextBlock x:Name="Tb_DetailInfo" 
                          Style="{StaticResource TextBoxDetailInfoStyle}"
                           Text="{Binding DetailInfo}"/>
                 </ScrollViewer>
 
+                <!--Photo of the apartment-->
                 <Image Name="Image_ApartPhoto" Grid.Row="1" 
                        Style="{StaticResource ImageInfoPhotoStyle}"
                        Source="{Binding CurrentPhoto.PhotoName, 
                                 Converter={StaticResource ImageSourceConverter}}" 
                                 />
 
-                <!--<Image Name="Image_ApartPhoto" Grid.Row="1" 
-                        Source="Images/1.jpg"
-                       Style="{StaticResource ImageInfoPhotoStyle}"/>-->
-
                 <Button Name="Btn_Prev" Grid.Row="1" HorizontalAlignment="Left"
                         Style="{StaticResource ButtonPhotoNavigationStyle}"
                         Command="{Binding PreviousPhotoCommand}"
-                        >
+                        Visibility="{Binding VisibilityNavigationBtn}">
                     <Button.Content>
-                        Prev
+                        <mdc:PackIcon Kind="ArrowLeft" Width="24" Height="24"
+                                      Foreground="Black" FontWeight="Bold"/>
                     </Button.Content>
                 </Button>
 
                 <Button Name="Btn_Next" Grid.Row="1" HorizontalAlignment="Right"
                         Style="{StaticResource ButtonPhotoNavigationStyle}"                      
                         Command="{Binding NextPhotoCommand}"
-                        >
+                        Visibility="{Binding VisibilityNavigationBtn}">
                     <Button.Content>
-                        Next
+                        <mdc:PackIcon Kind="ArrowRight" Width="24" Height="24"
+                                      Foreground="Black" FontWeight="Bold"/>
                     </Button.Content>
                 </Button>
 

@@ -82,7 +82,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             Apartments.Clear();  
             Photos.Clear();
             CurrentPhoto = null;
-            if(h != null && h.Apartments != null && h.Apartments.Count > 0)
+            VisibilityNavigationBtn = Visibility.Collapsed;
+
+            if (h != null && h.Apartments != null && h.Apartments.Count > 0)
             {
                 foreach(Apartment ap in  h.Apartments) Apartments.Add(ap);
                 DetailInfo = h.ToString(full: true);
@@ -109,8 +111,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 DetailInfo = SelectedApartment.ToString(full:true);
                 Photos.Clear();
                 CurrentPhoto = null;
-                foreach(Photo photo in SelectedApartment.Photos) Photos.Add(photo);
+                foreach (Photo photo in SelectedApartment.Photos) Photos.Add(photo);
                 if (Photos.Count > 0) CurrentPhoto = Photos[0];
+
             }
 
         }
@@ -119,7 +122,18 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         #region PhotoNavigation
         private ICommand _previousPhotoCommand;
         private ICommand _nextPhotoCommand;
+        private ICommand _gridDetailInfoMouseEnterCommand;
+        private ICommand _gridDetailInfoMouseLeaveCommand;
+        private Visibility _visibilityNavigationBtn = Visibility.Collapsed;
 
+        // The visibility property of photo swipe buttons.
+        public Visibility VisibilityNavigationBtn
+        {
+            get => _visibilityNavigationBtn;
+            set { Set(ref _visibilityNavigationBtn, value); }
+        }
+
+        // The command to press the “previous photo” button. Displays the previous photo.
         public ICommand PreviousPhotoCommand => _previousPhotoCommand ??= new
             RelayCommand(
                 // Sets the previous photo in the collection as the current photo
@@ -138,6 +152,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 }
             );
 
+        // Press the Next Photo button command. Displays the next photo.
         public ICommand NextPhotoCommand => _nextPhotoCommand ??= new
             RelayCommand(
                 (id) =>
@@ -157,6 +172,24 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
              );
 
+        // Command to enter the cursor into the detailed information grid area.
+        // Makes the photo scroll buttons visible.
+        public ICommand GridDetailInfoMouseEnterCommand => _gridDetailInfoMouseEnterCommand ??=
+            new RelayCommand(
+                (id) => { VisibilityNavigationBtn = Visibility.Visible; },
+                (id) =>
+                    {
+                        if (Photos.Count > 0 && CurrentPhoto != null) return true;
+                        else return false;
+                    }
+                );
+
+        // Command to exit the cursor from the area and detailed information grid.
+        // Makes photo scroll buttons invisible.
+        public ICommand GridDetailInfoMouseLeaveCommand => _gridDetailInfoMouseLeaveCommand ??=
+            new RelayCommand(
+                (id) => { VisibilityNavigationBtn = Visibility.Collapsed; }
+                );
         #endregion
 
 
