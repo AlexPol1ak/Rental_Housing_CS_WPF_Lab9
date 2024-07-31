@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure">
 
     <!--Brush for the base background of the main window-->
     <LinearGradientBrush x:Key="Gray_LGBrush" StartPoint="1,1" EndPoint="1,0.5">
@@ -7,6 +7,5 @@
         <GradientStop Color="Gray" Offset="0.4"/>
         <GradientStop Color="DimGray" Offset="0.1"/>
     </LinearGradientBrush>
-    
     
 </ResourceDictionary>

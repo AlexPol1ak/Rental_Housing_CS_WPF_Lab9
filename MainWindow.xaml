@@ -228,5 +228,29 @@
             </GroupBox>
         <!--#endregion-->
 
+
+        <!--region CONTROL BUTTONS-->
+        <UniformGrid Name="UG_HomeControlBtn" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                     Margin="5" Columns="3" Rows="1">
+            <Button Name="Btn_AddHome" Style="{StaticResource ControlBtnStyle}">
+                <Button.Content>
+                    Add
+                </Button.Content>
+            </Button>
+
+            <Button Name="Btn_EditHome" Style="{StaticResource ControlBtnStyle}">
+                <Button.Content>
+                    edit
+                </Button.Content>
+            </Button>
+
+            <Button Name="Btn_DelHome" Style="{StaticResource ControlBtnStyle}"
+                Command="{Binding DeleteCommand}">
+                <Button.Content>
+                    delete
+                </Button.Content>
+            </Button>
+        </UniformGrid>
+
     </Grid>
 </Window>

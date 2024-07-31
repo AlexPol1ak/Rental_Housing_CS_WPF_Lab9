@@ -75,4 +75,8 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ControlBtnStyle" TargetType="Button">
+        <Setter Property="Margin" Value="20 10 20 15"/>
+    </Style>
+
 </ResourceDictionary>

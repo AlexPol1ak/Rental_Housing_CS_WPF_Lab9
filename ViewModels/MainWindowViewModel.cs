@@ -11,6 +11,7 @@ using System.Windows.Input;
 using CS_WPF_Lab9_Rental_Housing.Commands;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Navigation;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -47,8 +48,8 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             get => _detailInfo;
             set { Set(ref _detailInfo, value); }
         }
-        public Photo? CurrentPhoto 
-        { 
+        public Photo? CurrentPhoto
+        {
             get => _currentPhoto;
             set { Set(ref _currentPhoto, value); }
         }
@@ -64,8 +65,8 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
             Houses = new ObservableCollection<House>(houseManager.GetAllHouses(true));
             Apartments = new ObservableCollection<Apartment>();
-            Photos = new ObservableCollection<Photo>(); 
-         
+            Photos = new ObservableCollection<Photo>();
+
         }
 
         #region Commands
@@ -73,42 +74,42 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         #region Select house
         private ICommand _selectHouseCommand;
         public ICommand SelectHouseCommand => _selectHouseCommand ??=
-            new RelayCommand(SelectHouseExecuted);
+            new RelayCommand(selectHouseExecuted);
 
-        private void SelectHouseExecuted(object obj)
+        private void selectHouseExecuted(object obj)
         {
             House h = SelectedHouses;
 
-            Apartments.Clear();  
+            Apartments.Clear();
             Photos.Clear();
             CurrentPhoto = null;
             VisibilityNavigationBtn = Visibility.Collapsed;
 
             if (h != null && h.Apartments != null && h.Apartments.Count > 0)
             {
-                foreach(Apartment ap in  h.Apartments) Apartments.Add(ap);
+                foreach (Apartment ap in h.Apartments) Apartments.Add(ap);
                 DetailInfo = h.ToString(full: true);
             }
             else { DetailInfo = string.Empty; }
-            SelectedApartment = null;           
+            SelectedApartment = null;
         }
         #endregion
 
         #region Select Apartment
         private ICommand _selectApartmentCommand;
         public ICommand SelectApartmentCommand => _selectApartmentCommand ??=
-            new RelayCommand(SelectApartmentExecuted);
+            new RelayCommand(selectApartmentExecuted);
 
-        private void SelectApartmentExecuted(object obj)
+        private void selectApartmentExecuted(object obj)
         {
-            if(SelectedApartment == null)
+            if (SelectedApartment == null)
             {
                 DetailInfo = string.Empty;
             }
             else
             {
                 apartmentManager.LoadPhotos(SelectedApartment);
-                DetailInfo = SelectedApartment.ToString(full:true);
+                DetailInfo = SelectedApartment.ToString(full: true);
                 Photos.Clear();
                 CurrentPhoto = null;
                 foreach (Photo photo in SelectedApartment.Photos) Photos.Add(photo);
@@ -137,8 +138,8 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         public ICommand PreviousPhotoCommand => _previousPhotoCommand ??= new
             RelayCommand(
                 // Sets the previous photo in the collection as the current photo
-                (id) => 
-                { 
+                (id) =>
+                {
                     int index = Photos.IndexOf(CurrentPhoto!);
                     CurrentPhoto = Photos[--index];
                 },
@@ -192,6 +193,113 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 );
         #endregion
 
+        #region Control Buttons 
+
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private ICommand _addCommand;
+        private Func<object, bool> _hasObject => 
+            (id)=> SelectedHouses != null || SelectedApartment != null;
+
+        public ICommand DeleteCommand => _deleteCommand ??=
+            new RelayCommand(deleteButtonExecuted, _hasObject);
+
+        /// <summary>
+        /// Executor for the Delete command 
+        /// </summary>
+        private void deleteButtonExecuted(object obj)
+        {
+            string title = "Удаление";
+            // If a house is selected - delete the house.
+            if (SelectedApartment == null && SelectedHouses != null)
+            {
+                var result = MessageBox.Show($"Удалить дом ?\n{SelectedHouses.ToString()}",
+                    title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool result2 =  DeleteHouse(SelectedHouses);
+                    if(result2)
+                    {
+                        MessageBox.Show("Удалено!", title,
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                                      
+                }
+            }
+            // If an apartment is selected, delete the apartment.
+            if (SelectedApartment != null)
+            {
+                var result = MessageBox.Show(
+                    $"Удалить кваритру ?\n{SelectedApartment.ToString()}",title, 
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool result2 = DeleteApartment(SelectedApartment);
+                    if (result2)
+                    {
+                        MessageBox.Show("Удалено!", title,
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }                
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Removes house from the database, from the linked collection, from the “selected item”.
+        /// </summary>
+        /// <param name="house">House object</param>
+        /// <returns>True - if the deletion was successful, otherwise False.</returns>
+        public bool DeleteHouse(House house)
+        {
+            bool result = false;
+
+            if (houseManager.ContainsHouse(house))
+            {
+                result = houseManager.DeleteHouse(house.HouseId);
+                houseManager.SaveChanges();
+            }
+            if(Houses.Contains(house))
+            {
+                result = Houses.Remove(house);
+            }
+            if (SelectedHouses == house)
+            {
+                SelectedHouses = null;
+                result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deletes an apartment from the database, from the linked collection, from the “selected item”. 
+        /// </summary>
+        /// <param name="apartment">Apartment object</param>
+        /// <returns>True - if the deletion was successful, otherwise False.</returns>
+        public bool DeleteApartment(Apartment apartment)
+        {
+            bool result = false;
+
+            if (apartmentManager.ContainsApartment(apartment))
+            {
+                result = apartmentManager.DeleteApartment(apartment.ApartmentId);
+                apartmentManager.SaveChanges();
+            }
+            if (Apartments.Contains(apartment))
+            {
+                result = Apartments.Remove(apartment);               
+            }
+            if(SelectedApartment == apartment)
+            {
+                SelectedApartment = null;
+                result = true;
+            }
+            return result ;
+        }
 
         #endregion
     }
