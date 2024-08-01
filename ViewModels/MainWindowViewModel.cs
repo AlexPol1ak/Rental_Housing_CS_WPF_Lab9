@@ -12,6 +12,7 @@ using CS_WPF_Lab9_Rental_Housing.Commands;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Navigation;
+using System.Windows.Controls;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -71,7 +72,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         #region Commands
 
-        #region Select house
+        #region Commands select house
         private ICommand _selectHouseCommand;
         public ICommand SelectHouseCommand => _selectHouseCommand ??=
             new RelayCommand(selectHouseExecuted);
@@ -93,9 +94,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             else { DetailInfo = string.Empty; }
             SelectedApartment = null;
         }
-        #endregion
+        #endregion 
 
-        #region Select Apartment
+        #region Commands select Apartment
         private ICommand _selectApartmentCommand;
         public ICommand SelectApartmentCommand => _selectApartmentCommand ??=
             new RelayCommand(selectApartmentExecuted);
@@ -120,7 +121,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         }
         #endregion
 
-        #region PhotoNavigation
+        #region Commands photo navigation
         private ICommand _previousPhotoCommand;
         private ICommand _nextPhotoCommand;
         private ICommand _gridDetailInfoMouseEnterCommand;
@@ -193,7 +194,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 );
         #endregion
 
-        #region Control Buttons 
+        #region Commands control buttons 
 
         private ICommand _deleteCommand;
         private ICommand _editCommand;
@@ -201,8 +202,44 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         private Func<object, bool> _hasObject => 
             (id)=> SelectedHouses != null || SelectedApartment != null;
 
+
         public ICommand DeleteCommand => _deleteCommand ??=
             new RelayCommand(deleteButtonExecuted, _hasObject);
+
+        public ICommand EditCommand => _editCommand ??=
+            new RelayCommand(editButtonExecuted, _hasObject);
+
+        public ICommand AddComand => _addCommand ??=
+            new RelayCommand(addButtonExecuted);
+
+        /// <summary>
+        /// Executor for the Edit command 
+        /// </summary>
+        private void addButtonExecuted(object obj)
+        {
+            string title = "Создание";
+            MessageBox.Show("Создать", title);
+            
+        }
+
+        /// <summary>
+        /// Executor for the Edit command 
+        /// </summary>
+        private void editButtonExecuted(object obj)
+        {
+            if (SelectedApartment == null && SelectedHouses != null)
+            {
+                House _tempHouse = SelectedHouses;
+                EditHouse(ref _tempHouse);
+                SelectedHouses = _tempHouse;
+            }
+            if (SelectedApartment != null)
+            {
+                Apartment _tempApartment = SelectedApartment;
+                EditApartment(ref _tempApartment);
+                SelectedApartment = _tempApartment;
+            }
+        }
 
         /// <summary>
         /// Executor for the Delete command 
@@ -248,6 +285,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         #endregion
 
+        #region Encapsulated CRUD actions
         /// <summary>
         /// Removes house from the database, from the linked collection, from the “selected item”.
         /// </summary>
@@ -300,6 +338,21 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             }
             return result ;
         }
+
+        public bool EditHouse(ref House house)
+        {
+            MessageBox.Show($"Изменить {house.ToString()}");
+            bool result = false;
+            return result;
+        }
+
+        public bool EditApartment(ref Apartment apartment)
+        {
+            MessageBox.Show($"Изменить {apartment.ToString()}");
+            bool result = false;
+            return result;
+        }
+        #endregion
 
         #endregion
     }

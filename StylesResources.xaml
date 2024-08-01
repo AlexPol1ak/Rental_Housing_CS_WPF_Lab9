@@ -42,6 +42,11 @@
         <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
     </Style>
 
+    <!--Style for line names in editing windows.-->
+    <Style x:Key="TextBlockEditWindowStyle" BasedOn="{StaticResource ListViewColumnHeaderTextstyle}">
+        <Setter Property="TextBlock.FontSize" Value="16"/>
+    </Style>
+
     <!--Style for TextBlock detailed information about the record.-->
     <Style x:Key="TextBoxDetailInfoStyle"  BasedOn="{StaticResource GroupBoxHeaderTextStyle}">
         <Setter Property="TextBlock.Margin" Value="3"/>
@@ -77,6 +82,16 @@
 
     <Style x:Key="ControlBtnStyle" TargetType="Button">
         <Setter Property="Margin" Value="20 10 20 15"/>
+    </Style>
+
+    <!--Style for TextBoxes in editing windows.-->
+    <Style x:Key="TextBoxEditWondowStyle" TargetType="TextBox">
+        <Setter Property="Margin" Value="10 10 10 10"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Centaur"/>
+        <Setter Property="FontSize" Value="12"/>
+        
     </Style>
 
 </ResourceDictionary>

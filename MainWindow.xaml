@@ -238,7 +238,8 @@
                 </Button.Content>
             </Button>
 
-            <Button Name="Btn_EditHome" Style="{StaticResource ControlBtnStyle}">
+            <Button Name="Btn_EditHome" Style="{StaticResource ControlBtnStyle}"
+                    Command="{Binding EditCommand}">
                 <Button.Content>
                     edit
                 </Button.Content>
