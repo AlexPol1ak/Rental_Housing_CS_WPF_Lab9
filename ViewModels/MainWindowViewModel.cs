@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Navigation;
 using System.Windows.Controls;
+using CS_WPF_Lab9_Rental_Housing.Views;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -27,12 +28,12 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         public ObservableCollection<Apartment> Apartments { get; set; }
         public ObservableCollection<Photo> Photos { get; set; }
 
-        private House _selectedHouses;
+        private House? _selectedHouses;
         private Apartment? _selectedApartment = null;
         private string _detailInfo = string.Empty;
         private Photo? _currentPhoto = null;
 
-        public House SelectedHouses
+        public House? SelectedHouses
         {
             get { return _selectedHouses; }
             set { Set(ref _selectedHouses, value); }
@@ -79,7 +80,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         private void selectHouseExecuted(object obj)
         {
-            House h = SelectedHouses;
+            House? h = SelectedHouses;
 
             Apartments.Clear();
             Photos.Clear();
@@ -228,16 +229,14 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         private void editButtonExecuted(object obj)
         {
             if (SelectedApartment == null && SelectedHouses != null)
-            {
-                House _tempHouse = SelectedHouses;
-                EditHouse(ref _tempHouse);
-                SelectedHouses = _tempHouse;
+            {            
+                EditHouse();
+                return;
             }
             if (SelectedApartment != null)
             {
-                Apartment _tempApartment = SelectedApartment;
-                EditApartment(ref _tempApartment);
-                SelectedApartment = _tempApartment;
+                EditApartment();
+                return;
             }
         }
 
@@ -339,16 +338,26 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             return result ;
         }
 
-        public bool EditHouse(ref House house)
+        public bool EditHouse()
         {
-            MessageBox.Show($"Изменить {house.ToString()}");
-            bool result = false;
-            return result;
+            if (SelectedHouses == null) return false;
+
+            EditHouseWindow editHouseWindow = new EditHouseWindow(SelectedHouses);
+            bool? result = editHouseWindow.ShowDialog();
+
+            if(result == true)
+            {
+                houseManager.UpdateHouse(editHouseWindow.SelectedHouse);
+                houseManager.SaveChanges();
+                Houses.Clear();
+                foreach(House house in houseManager.GetAllHouses(true)) Houses.Add(house);
+            }
+            return result == true;  
         }
 
-        public bool EditApartment(ref Apartment apartment)
+        public bool EditApartment()
         {
-            MessageBox.Show($"Изменить {apartment.ToString()}");
+            MessageBox.Show($"Изменить {SelectedApartment?.ToString()}");
             bool result = false;
             return result;
         }

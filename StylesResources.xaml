@@ -90,8 +90,24 @@
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Centaur"/>
-        <Setter Property="FontSize" Value="12"/>
-        
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+
+    </Style>
+
+    <Style x:Key="ButtonSaveCancelStyle" TargetType="Button">
+        <Setter Property="Margin" Value="25 20 25 15"/>
+        <Setter Property="FontFamily" Value="Rage Italic"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style x:Key="ComboBoxEditWindowStyle" TargetType="ComboBox">
+        <Setter Property="Margin" Value="50 10 50 10"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="Century Schoolbook"/>
     </Style>
 
 </ResourceDictionary>
