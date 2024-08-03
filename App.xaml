@@ -6,8 +6,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="StylesResources.xaml"/>
-                <ResourceDictionary Source="ElementResources.xaml"/>
+                <ResourceDictionary Source="Resources\Styles\MainWindowStyles.xaml"/>
+                <ResourceDictionary Source="Resources\Styles\EditWindowStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
          
