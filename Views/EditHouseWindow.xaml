@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing.Views" 
+        xmlns:cmd="clr-namespace:CS_WPF_Lab9_Rental_Housing.Commands"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="EditHouseWindow" Height="500" Width="400">
@@ -50,30 +51,64 @@
            Style="{StaticResource TextBlockEditWindowStyle}"/>
         <!--endregion-->
 
-        <TextBox Name="Tb_City" Grid.Row="0" Grid.Column="1"
-                 Style="{StaticResource TextBoxEditWondowStyle}"
-                 Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Name="Tb_City" Grid.Row="0" Grid.Column="1" MaxLength="45"
+                 Style="{StaticResource TextBoxEditWindowStyle}">
+            <TextBox.Text>
+                <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+            </TextBox>
 
-        <TextBox Name="Tb_Street" Grid.Row="1" Grid.Column="1"
-         Style="{StaticResource TextBoxEditWondowStyle}"
-                 Text="{Binding Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Name="Tb_Street" Grid.Row="1" Grid.Column="1" MaxLength="45"
+         Style="{StaticResource TextBoxEditWindowStyle}">
+        <TextBox.Text>
+            <Binding Path="Street" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding.ValidationRules>
+                    <DataErrorValidationRule/>
+                </Binding.ValidationRules>
+            </Binding>
+        </TextBox.Text>
+        </TextBox>
 
         <TextBox Name="Tb_Number" Grid.Row="2" Grid.Column="1"
-                Style="{StaticResource TextBoxEditWondowStyle}"
-                Margin="50 10 50 10"
-                 Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Style="{StaticResource TextBoxEditWindowStyle}"
+                Margin="50 10 50 10">
+        <TextBox.Text>
+            <Binding Path="Number" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding.ValidationRules>
+                    <DataErrorValidationRule/>
+                </Binding.ValidationRules>
+            </Binding>
+        </TextBox.Text>
+        </TextBox>
 
         <TextBox Name="Tb_Block" Grid.Row="3" Grid.Column="1"
-                Style="{StaticResource TextBoxEditWondowStyle}"
-                 Margin="50 10 50 10"
-                 Text="{Binding Block, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
+                Style="{StaticResource TextBoxEditWindowStyle}"
+                Margin="50 10 50 10">
+        <TextBox.Text>
+            <Binding Path="Block" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding.ValidationRules>
+                    <DataErrorValidationRule/>
+                </Binding.ValidationRules>
+            </Binding>
+        </TextBox.Text>
+        </TextBox>
+
         <ComboBox Name="ComboBox_Floors" Grid.Row="4" Grid.Column="1"
                   IsEditable="True"
                   Style="{StaticResource ComboBoxEditWindowStyle}"
-                  ItemsSource="{Binding RangeFloors}"
-                  SelectedItem="{Binding CountFloors,
-                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  ItemsSource="{Binding RangeFloors}">
+            <ComboBox.SelectedItem>
+                    <Binding Path="CountFloors" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedItem>
+        </ComboBox>
 
         <CheckBox Name="ChB_Elevator" Grid.Row="5" Grid.Column="1" 
                   VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -83,16 +118,24 @@
         <ComboBox Name="ComboBox_YearBuilding" Grid.Row="6" Grid.Column="1"
                   IsEditable="True"
                   Style="{StaticResource ComboBoxEditWindowStyle}"
-                  ItemsSource="{Binding RangeYears}"
-                  SelectedItem="{Binding BuildingYear, 
-                                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  ItemsSource="{Binding RangeYears}">
+            <ComboBox.SelectedItem>
+                    <Binding Path="BuildingYear" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedItem>
+        </ComboBox>
 
-        <UniformGrid Name="UnGrid_Buttons" Grid.Row="7" Grid.ColumnSpan="2" Rows="1" Columns="2">
+        <UniformGrid Name="UnGrid_Buttons" Grid.Row="7" Grid.ColumnSpan="2" 
+                     Rows="1" Columns="2">
             <Button Name="Btn_Save" Grid.Column="1" Content="Сохранить"
                     Style="{StaticResource ButtonSaveCancelStyle}"
-                    Command="Save"/>
+                    Command="ApplicationCommands.Save"/>
             <Button Name="Btn_Cancel" Grid.Column="2" Content="Выход"
                     Style="{StaticResource ButtonSaveCancelStyle}"
+                    Command="cmd:WindowCommands.Exit"
                     />
 
         </UniformGrid>

@@ -1,7 +1,9 @@
 ﻿using CS_WPF_Lab9_Rental_Housing.Commands;
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
     /// <summary>
     /// Window for creating and editing a house
     /// </summary>
-    public partial class EditHouseWindow : Window
+    public partial class EditHouseWindow : Window, IDataErrorInfo
     {
         private House _selectedHouse;
         public House SelectedHouse
@@ -34,7 +36,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             this.Title = "Добавить новый дом";
             SelectedHouse = new House();
             _installSettings();
-            showData();
+            ReadData();
         }
 
         public EditHouseWindow(House house) : this()
@@ -42,22 +44,22 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             this.Title = "Редактировать дом";
             SelectedHouse = house;
             _installSettings();
-            showData();
+            ReadData();
         }
 
         #region ComboBox Data
         private List<int> _rangeYears = new List<int>();
         private List<int> _rangeFloors = new List<int>();
 
-        public List<int> RangeYears 
-        { 
-            get => _rangeYears; 
-            private set => _rangeYears = value; 
+        public List<int> RangeYears
+        {
+            get => _rangeYears;
+            private set => _rangeYears = value;
         }
-        public List<int> RangeFloors 
-        { 
-            get => _rangeFloors; 
-            private set => _rangeFloors = value; 
+        public List<int> RangeFloors
+        {
+            get => _rangeFloors;
+            private set => _rangeFloors = value;
         }
         #endregion
 
@@ -66,7 +68,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public string City
         {
             get { return (string)GetValue(CityProperty); }
-            set { SetValue(CityProperty, value); }
+            set
+            {
+                SetValue(CityProperty, value);
+            }
         }
         public static readonly DependencyProperty CityProperty =
             DependencyProperty.Register(nameof(City), typeof(string),
@@ -75,7 +80,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public string Street
         {
             get { return (string)GetValue(StreetProperty); }
-            set { SetValue(StreetProperty, value); }
+            set
+            {
+                SetValue(StreetProperty, value);
+            }
         }
         public static readonly DependencyProperty StreetProperty =
             DependencyProperty.Register(nameof(Street), typeof(string),
@@ -84,7 +92,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public int Number
         {
             get { return (int)GetValue(NumberProperty); }
-            set { SetValue(NumberProperty, value); }
+            set
+            {
+                SetValue(NumberProperty, value);
+            }
         }
         public static readonly DependencyProperty NumberProperty =
             DependencyProperty.Register(nameof(Number), typeof(int),
@@ -93,7 +104,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public int? Block
         {
             get { return (int?)GetValue(BlockProperty); }
-            set { SetValue(BlockProperty, value); }
+            set
+            {
+                SetValue(BlockProperty, value);
+            }
         }
         public static readonly DependencyProperty BlockProperty =
             DependencyProperty.Register(nameof(Block), typeof(int?),
@@ -102,7 +116,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public int CountFloors
         {
             get { return (int)GetValue(CountFloorsProperty); }
-            set { SetValue(CountFloorsProperty, value); }
+            set
+            {
+                SetValue(CountFloorsProperty, value);
+            }
         }
         public static readonly DependencyProperty CountFloorsProperty =
             DependencyProperty.Register(nameof(CountFloors), typeof(int),
@@ -111,7 +128,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public bool HasElevator
         {
             get { return (bool)GetValue(HasElevatorProperty); }
-            set { SetValue(HasElevatorProperty, value); }
+            set {  SetValue(HasElevatorProperty, value);}
         }
         public static readonly DependencyProperty HasElevatorProperty =
             DependencyProperty.Register(nameof(HasElevator), typeof(bool),
@@ -120,7 +137,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public int BuildingYear
         {
             get { return (int)GetValue(BuildingYearProperty); }
-            set { SetValue(BuildingYearProperty, value); }
+            set
+            {
+                SetValue(BuildingYearProperty, value);
+            }
         }
 
         public static readonly DependencyProperty BuildingYearProperty =
@@ -129,6 +149,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
 
         #endregion
 
+        #region Supporting methods
         /// <summary>
         /// Sets the commands for the save and exit buttons. 
         /// Displays object data, sets initial selection data for ComboBox.
@@ -139,16 +160,16 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             _loadFloorsRange();
 
             CommandBinding commandBindingSave = new CommandBinding(
-                ApplicationCommands.Save, 
+                ApplicationCommands.Save,
                 (s, e) =>
                 {
                     changeHouse();
                     this.DialogResult = true;
                     this.Close();
                 },
-                (s, e) => { e.CanExecute = canChangeHouse(); }
+                (s, e) => { e.CanExecute = !HasError(); }
                 );
-            
+
             CommandBinding commandBindingExit = new CommandBinding(
                 WindowCommands.Exit,
                 (s, e) => { this.Close(); }
@@ -157,29 +178,29 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             this.CommandBindings.Add(commandBindingSave);
             this.CommandBindings.Add(commandBindingExit);
 
-            Btn_Cancel.Command = WindowCommands.Exit;
-         
         }
 
+        /// <summary>
+        /// Sets the allowable range for the construction date of the house.
+        /// </summary>
         private void _loadYearsRange()
         {
-            for(int year = 1920; year <=DateTime.Now.Year;  year++) RangeYears.Add(year);
+            for (int year = 1920; year <= DateTime.Now.Year; year++) RangeYears.Add(year);
         }
 
+        /// <summary>
+        /// Sets the allowable range of the number of floors.
+        /// </summary>
         private void _loadFloorsRange()
         {
-            for(int floor = 1; floor <=30; floor++) RangeFloors.Add(floor);
+            for (int floor = 1; floor <= 30; floor++) RangeFloors.Add(floor);
         }
 
-        public bool canChangeHouse()
-        {
-
-            return true;
-        }
-
+        /// <summary>
+        /// Saves the entered data to the object received for editing.
+        /// </summary>
         private void changeHouse()
         {
-            MessageBox.Show(SelectedHouse.ToString());
             SelectedHouse.City = City;
             SelectedHouse.Street = Street;
             SelectedHouse.Number = Number;
@@ -187,10 +208,13 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             SelectedHouse.CountFloors = CountFloors;
             SelectedHouse.HasElevator = HasElevator;
             SelectedHouse.BuildingYear = BuildingYear;
-            MessageBox.Show(SelectedHouse.ToString());
         }
 
-        private void showData()
+        /// <summary>
+        /// Saves data from the received object to the properties of dependencies
+        /// bound to input fields.
+        /// </summary>
+        private void ReadData()
         {
             City = SelectedHouse.City;
             Street = SelectedHouse.Street;
@@ -200,7 +224,72 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             HasElevator = SelectedHouse.HasElevator;
             BuildingYear = SelectedHouse.BuildingYear;
         }
-            
-    }
+        #endregion
 
+        #region Validation data
+
+        /// <summary>
+        /// Checks for errors in the input fields.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasError()
+        {
+            foreach (var item in Grid_MainChangeHouse.Children)
+            {
+                if (item is TextBox tb)
+                {
+                    var errors = Validation.GetErrors(tb);
+                    if (errors.Any()) return true;
+                }
+                if (item is CheckBox cb)
+                {
+                    var errors = Validation.GetErrors(cb);
+                    if (errors.Any()) return true;
+                }
+            }
+            return false;
+        }
+
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string error = string.Empty;
+                switch (columnName)
+                {
+                    case nameof(City):
+                        if (string.IsNullOrWhiteSpace(City))
+                            error = "Город не может быть пустым.";
+                        break;
+                    case nameof(Street):
+                        if (string.IsNullOrWhiteSpace(Street))
+                            error = "Улица не может быть пустой.";
+                        break;
+                    case nameof(Number):
+                        if (Number <= 0)
+                            error = "Номер дома должен быть больше 0.";
+                        break;
+                    case nameof(Block):
+                        if (Block != null && Block <= 0)
+                            error = "Корпус должен быть больше 0 или пустым.";
+                        break;
+                    case nameof(CountFloors):
+                        if (CountFloors <= 0)
+                            error = "Количество этажей должно быть больше 0.";
+                        break;
+                    case nameof(BuildingYear):
+                        if (BuildingYear < 1920 || BuildingYear > DateTime.Now.Year)
+                            error = $"Год постройки должен быть между 1920 и {DateTime.Now.Year}.";
+                        break;  
+                    
+                }
+                CommandManager.InvalidateRequerySuggested();
+                return error;
+            }
+        }
+
+        #endregion
+    }
 }
