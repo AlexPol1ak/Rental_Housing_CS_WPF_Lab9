@@ -23,7 +23,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="1.2*"/>
         </Grid.ColumnDefinitions>
-
+        
         <!--region Text headers-->
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Город: "
                    Style="{StaticResource TextBlockEditWindowStyle}"/>

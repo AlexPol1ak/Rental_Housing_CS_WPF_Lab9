@@ -5,8 +5,167 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing.Views"
         mc:Ignorable="d"
-        Title="EditApartmentWindow" Height="450" Width="800">
-    <Grid>
+        Title="EditApartmentWindow" Height="500" Width="600">
+    <Grid x:Name="Grid_MainChangeApartment" Background="{StaticResource Gray_LGBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="0.4*"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <GroupBox Grid.Row="0" Margin="3">
+            <GroupBox.Header>
+                <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
+                           Text="Дом"/>
+            </GroupBox.Header>
+            <TextBlock Style="{StaticResource TextBoxDetailInfoStyle}" 
+                       Text="asdddadsasdad" VerticalAlignment="Center"/>
+        </GroupBox>
+
+        <!--region InputData-->
+        <GroupBox Name="GB_InputData" Grid.Row="1" Margin="3">
+            <GroupBox.Header>
+                <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
+                   Text="Квартира"/>
+            </GroupBox.Header>
+
+            <Grid Name="Grid_InputData">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.8*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.8*"/>
+                </Grid.ColumnDefinitions>
+                <!--region Text-->
+                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           >
+                    <Run Text="Номер"/>
+                    <LineBreak/>
+                    <Run Text="Квартиры:"/>
+                </TextBlock>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           Text="Этаж:"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           >
+                    <Run Text="Количество"/>
+                    <LineBreak/>
+                    <Run Text="комнат:"/>
+                </TextBlock>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           Text="Площадь(кв.м):"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           Text="Владелец:"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="2" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           Text="Моб. телефон:"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="2" TextAlignment="Center"
+                           Style="{StaticResource TextBlockEditWindowStyle}"
+                           Text="Цена ($):"/>
+                <!--endregion-->
+                <!--region Input-->
+                <TextBox Name="Tb_Number" Grid.Row="0" Grid.Column="1"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="15 7 15 7">
+                </TextBox>
+
+                <TextBox Name="Tb_Floor" Grid.Row="1" Grid.Column="1"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                </TextBox>
+
+                <TextBox Name="Tb_CountRooms" Grid.Row="2" Grid.Column="1"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                </TextBox>
+
+                <TextBox Name="Tb_Area" Grid.Row="3" Grid.Column="1"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                </TextBox>
+
+                <TextBox Name="Tb_Owner" Grid.Row="0" Grid.Column="3"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="3 7">
+                </TextBox>
+
+                <TextBox Name="Tb_OwnerTel" Grid.Row="1" Grid.Column="3"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="3 7">
+                </TextBox>
+
+                <TextBox Name="Tb_Price" Grid.Row="2" Grid.Column="3"
+                         Style="{StaticResource TextBoxEditWindowStyle}"
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                </TextBox>
+                <!--endregion-->
+            </Grid>
+        </GroupBox>
         
+        
+        <!--endregion-->
+        <!--region Photos-->
+        <GroupBox Name ="GP_Photos" Grid.Row="2" Margin="3">
+            <GroupBox.Header>
+                <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
+                   Text="Фото"/>
+            </GroupBox.Header>
+            <Grid Name="Grid_Photo">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.3*"/>
+                </Grid.ColumnDefinitions>
+                
+                <ListBox Name="ListBox_Photos" Grid.Column="0" Background="Transparent"
+                         Margin="2" Padding="4">
+                    
+                </ListBox>
+                <StackPanel Name="StP_PhotoButtons" Grid.Column="1" Orientation="Vertical"
+                            VerticalAlignment="Center">
+                    <Button Name="Btn_AddPhoto" Content="Добавить"
+                            Style="{StaticResource ButtonSaveCancelStyle}"
+                            Margin="4"/>
+                    <Button/>
+                    <Button Name="Btn_DeletePhoto" Content="Удалить"
+                            Style="{StaticResource ButtonSaveCancelStyle}"
+                            Margin="4"/>
+                    <Button/>
+
+                </StackPanel>
+            </Grid>
+
+        </GroupBox>
+        <!--endregion-->
+
+        <UniformGrid Name="UnGrid_Buttons" Grid.Row="7" Grid.ColumnSpan="2" 
+             Rows="1" Columns="2">
+            
+            <Button Name="Btn_SavePhoto" Grid.Column="1" Content="Сохранить"
+            Style="{StaticResource ButtonSaveCancelStyle}"
+            Command="ApplicationCommands.Save"/>
+            
+            <Button Name="Btn_Cancel" Grid.Column="2" Content="Выход"
+            Style="{StaticResource ButtonSaveCancelStyle}"/>
+
+        </UniformGrid>
+
     </Grid>
 </Window>
