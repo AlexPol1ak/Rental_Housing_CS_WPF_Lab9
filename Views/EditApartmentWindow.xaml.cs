@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
     /// <summary>
     /// The window for creating or editing an apartment.
     /// </summary>
-    public partial class EditApartmentWindow : Window
+    public partial class EditApartmentWindow : Window, IDataErrorInfo
     {
         private House _selectedHouse;
         private Apartment _selectedApartment;
@@ -143,6 +144,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             get { return (ObservableCollection<Photo>)GetValue(PhotosProperty); }
             set { SetValue(PhotosProperty, value); }
         }
+
         public static readonly DependencyProperty PhotosProperty =
             DependencyProperty.Register(nameof(Photos), typeof(ObservableCollection<Photo>),
                 typeof(EditApartmentWindow), new PropertyMetadata(default(ObservableCollection<Photo>)));
@@ -185,6 +187,65 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         }
         #endregion
         #region Validation data
+
+        public bool HasError()
+        {
+            foreach (var item in Grid_InputData.Children)
+            {
+                if (item is TextBox tb)
+                {
+                    var errors = Validation.GetErrors(tb);
+                    if (errors.Any()) return true;
+                }
+            }
+            return false;
+        }
+
+        public string Error => throw new NotImplementedException();
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string error = string.Empty;
+                switch (columnName)
+                {
+                    case nameof(Number):
+                        if (Number <= 0)
+                            error = "Номер квартиры должен быть больше 0.";
+                        break;
+
+                    case nameof(Floor):
+                        if (Floor < 0)
+                            error = "Этаж должен быть не отрицательным числом.";
+                        break;
+
+                    case nameof(CountRooms):
+                        if (CountRooms <= 0)
+                            error = "Количество комнат должно быть больше 0.";
+                        break;
+
+                    case nameof(Area):
+                        if (Area <= 0)
+                            error = "Площадь должна быть больше 0.";
+                        break;
+
+                    case nameof(OwnerFIO):
+                        break;
+
+                    case nameof(OwnerTel):
+                        if (OwnerTel != null && OwnerTel < 1000000 || OwnerTel > 999999999999)
+                            error = "Телефонный номер должен быть в формате 7 или 10 цифр (например, 1234567890).";
+                        break;
+
+                    case nameof(Price):
+                        if (Price < 0)
+                            error = "Цена не может быть отрицательной.";
+                        break;
+                }
+                return error;
+            }
+        }
         #endregion
     }
 }
