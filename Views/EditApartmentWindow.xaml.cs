@@ -1,4 +1,5 @@
-﻿using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
+﻿using CS_WPF_Lab9_Rental_Housing.Commands;
+using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,6 +45,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             InitializeComponent();        
             SelectedHouse = house;
             SelectedApartment = new Apartment();
+            _installSettings();
             ReadData();
         }
 
@@ -53,6 +55,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             InitializeComponent();
             SelectedHouse = apartment.House;
             SelectedApartment = apartment;
+            _installSettings();
             ReadData();
             
         }
@@ -152,9 +155,33 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         #endregion
 
         #region Supporting methods
-        private void _installSettings()
+        public void _installSettings()
         {
 
+            CommandBinding commandBindingSave = new CommandBinding(
+                ApplicationCommands.Save,
+                (s, e) =>
+                {
+                    changeHouse();
+                    this.DialogResult = true;
+                    this.Close();
+                },
+                (s, e) => { e.CanExecute = !HasError(); }
+                );
+
+            CommandBinding commandBindingExit = new CommandBinding(
+                WindowCommands.Exit,
+                (s, e) => { this.Close(); }
+                );
+
+            this.CommandBindings.Add(commandBindingSave);
+            this.CommandBindings.Add(commandBindingExit);
+
+        }
+
+        private void changeHouse()
+        {
+            throw new NotImplementedException();
         }
 
         private void ReadData()
@@ -187,7 +214,9 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         }
         #endregion
         #region Validation data
-
+        /// <summary>
+        /// Checks the correctness of the data entered by the user.
+        /// </summary>
         public bool HasError()
         {
             foreach (var item in Grid_InputData.Children)

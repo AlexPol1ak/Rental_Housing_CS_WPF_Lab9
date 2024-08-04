@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing.Views"
         xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure"
+        xmlns:cmd="clr-namespace:CS_WPF_Lab9_Rental_Housing.Commands"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="600">
     <Window.Resources>
         <inf:ImageSourceConverter x:Key="ImageSourceConverter"/>
+        <inf:NullConverter x:Key="NullConverter"/>
     </Window.Resources>
     <Grid x:Name="Grid_MainChangeApartment" Background="{StaticResource Gray_LGBrush}">
         <Grid.RowDefinitions>
@@ -164,7 +166,8 @@
                          Margin="3 7" MaxLength="20">
                     <TextBox.Text>
                         <Binding Path="OwnerTel" Mode="TwoWay" 
-                                 UpdateSourceTrigger="PropertyChanged">
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 Converter="{StaticResource NullConverter}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule/>
                             </Binding.ValidationRules>
@@ -237,7 +240,8 @@
             Command="ApplicationCommands.Save"/>
             
             <Button Name="Btn_Cancel" Grid.Column="2" Content="Выход"
-            Style="{StaticResource ButtonSaveCancelStyle}"/>
+                    Style="{StaticResource ButtonSaveCancelStyle}"
+                    Command="cmd:WindowCommands.Exit"/>
 
         </UniformGrid>
 
