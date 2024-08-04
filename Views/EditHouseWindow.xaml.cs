@@ -32,8 +32,9 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
 
         public EditHouseWindow()
         {
-            InitializeComponent();
-            this.Title = "Добавить новый дом";
+            TitleText = "Добавить новый дом";
+
+            InitializeComponent();       
             SelectedHouse = new House();
             _installSettings();
             ReadData();
@@ -41,7 +42,9 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
 
         public EditHouseWindow(House house) : this()
         {
-            this.Title = "Редактировать дом";
+            TitleText = "Редактировать дом";
+
+            InitializeComponent();
             SelectedHouse = house;
             _installSettings();
             ReadData();
@@ -64,6 +67,15 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         #endregion
 
         #region Dependency properties
+
+        public string TitleText
+        {
+            get { return (string)GetValue(TitleTextProperty); }
+            set { SetValue(TitleTextProperty, value); }
+        }
+        public static readonly DependencyProperty TitleTextProperty =
+            DependencyProperty.Register(nameof(TitleText), typeof(string),
+                typeof(EditApartmentWindow), new PropertyMetadata(string.Empty));
 
         public string City
         {

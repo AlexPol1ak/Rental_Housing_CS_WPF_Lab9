@@ -4,25 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing.Views"
+        xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure"
         mc:Ignorable="d"
-        Title="EditApartmentWindow" Height="500" Width="600">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="600">
+    <Window.Resources>
+        <inf:ImageSourceConverter x:Key="ImageSourceConverter"/>
+    </Window.Resources>
     <Grid x:Name="Grid_MainChangeApartment" Background="{StaticResource Gray_LGBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.35*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.9*"/>
             <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
 
-        <!--Header-->
+        <!--region Header-->
         <GroupBox Grid.Row="0" Margin="3">
             <GroupBox.Header>
                 <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
                            Text="Дом"/>
             </GroupBox.Header>
             <TextBlock Style="{StaticResource TextBoxDetailInfoStyle}" 
-                       Text="asdddadsasdad" VerticalAlignment="Center"/>
+                       Text="{Binding HouseInfoText}"
+                       VerticalAlignment="Center"/>
         </GroupBox>
+        <!--endregion-->
 
         <!--region InputData-->
         <GroupBox Name="GB_InputData" Grid.Row="1" Margin="3">
@@ -44,6 +51,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="0.8*"/>
                 </Grid.ColumnDefinitions>
+
                 <!--region Text-->
                 <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Center"
                            Style="{StaticResource TextBlockEditWindowStyle}"
@@ -81,46 +89,105 @@
                            Style="{StaticResource TextBlockEditWindowStyle}"
                            Text="Цена ($):"/>
                 <!--endregion-->
+
                 <!--region Input-->
                 <TextBox Name="Tb_Number" Grid.Row="0" Grid.Column="1"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="15 7 15 7">
+                         Margin="15 7 15 7" MaxLength="10">
+                    <TextBox.Text>
+                        <Binding Path="Number" Mode="TwoWay" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <TextBox Name="Tb_Floor" Grid.Row="1" Grid.Column="1"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}"
+                         MaxLength="3">
+                    <TextBox.Text>
+                        <Binding Path="Floor" Mode="TwoWay" 
+                                UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <TextBox Name="Tb_CountRooms" Grid.Row="2" Grid.Column="1"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}"
+                         MaxLength="3">
+                    <TextBox.Text>
+                        <Binding Path="CountRooms" Mode="TwoWay" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <TextBox Name="Tb_Area" Grid.Row="3" Grid.Column="1"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}"
+                         MaxLength="10">
+                    <TextBox.Text>
+                        <Binding Path="Area" Mode="TwoWay" 
+                                UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <TextBox Name="Tb_Owner" Grid.Row="0" Grid.Column="3"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="3 7">
+                         Margin="3 7" MaxLength="45">
+                    <TextBox.Text>
+                        <Binding Path="OwnerFIO" Mode="TwoWay" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <TextBox Name="Tb_OwnerTel" Grid.Row="1" Grid.Column="3"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="3 7">
+                         Margin="3 7" MaxLength="20">
+                    <TextBox.Text>
+                        <Binding Path="OwnerTel" Mode="TwoWay" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <TextBox Name="Tb_Price" Grid.Row="2" Grid.Column="3"
                          Style="{StaticResource TextBoxEditWindowStyle}"
-                         Margin="{Binding ElementName=Tb_Number, Path=Margin}">
+                         Margin="{Binding ElementName=Tb_Number, Path=Margin}"
+                         MaxLength="20">
+                    <TextBox.Text>
+                        <Binding Path="Price" Mode="TwoWay" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
                 <!--endregion-->
             </Grid>
         </GroupBox>
-        
-        
         <!--endregion-->
         <!--region Photos-->
         <GroupBox Name ="GP_Photos" Grid.Row="2" Margin="3">
@@ -128,30 +195,37 @@
                 <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
                    Text="Фото"/>
             </GroupBox.Header>
+            
             <Grid Name="Grid_Photo">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
-                
-                <ListBox Name="ListBox_Photos" Grid.Column="0" Background="Transparent"
-                         Margin="2" Padding="4">
-                    
+                <!--Show Images-->
+                <ListBox ItemsSource="{Binding Photos}" 
+                         Style="{StaticResource ListBoxPhotosEditWindowStyle}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5">
+                                <Image Source="{Binding PhotoName, 
+                                    Converter={StaticResource ImageSourceConverter}}" 
+                                       Width="100" Height="100" Stretch="UniformToFill"/>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
+
+                <!--Photos Control-->
                 <StackPanel Name="StP_PhotoButtons" Grid.Column="1" Orientation="Vertical"
                             VerticalAlignment="Center">
                     <Button Name="Btn_AddPhoto" Content="Добавить"
                             Style="{StaticResource ButtonSaveCancelStyle}"
                             Margin="4"/>
-                    <Button/>
                     <Button Name="Btn_DeletePhoto" Content="Удалить"
                             Style="{StaticResource ButtonSaveCancelStyle}"
                             Margin="4"/>
-                    <Button/>
-
                 </StackPanel>
             </Grid>
-
         </GroupBox>
         <!--endregion-->
 

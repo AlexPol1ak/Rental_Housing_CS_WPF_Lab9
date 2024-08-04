@@ -357,9 +357,22 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         public bool EditApartment()
         {
-            MessageBox.Show($"Изменить {SelectedApartment?.ToString()}");
-            bool result = false;
-            return result;
+            if (SelectedApartment == null) return false;
+
+            EditApartmentWindow editApartWindow = new EditApartmentWindow(SelectedApartment);
+            bool? result = editApartWindow.ShowDialog();
+
+            if (result == true) 
+            { 
+                apartmentManager.UpdateApartment(editApartWindow.SelectedApartment);
+                //apartmentManager.SaveChanges();
+                if(SelectedHouses != null)
+                {
+                    Apartments.Clear();
+                    foreach (Apartment ap in SelectedHouses.Apartments) Apartments.Add(ap);
+                } 
+            }
+            return result ==true;
         }
         #endregion
 

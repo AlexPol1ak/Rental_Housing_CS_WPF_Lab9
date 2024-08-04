@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,10 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Data;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 namespace CS_WPF_Lab9_Rental_Housing.Infastructure
 {
-    internal class ImageSourceConverter : IValueConverter
+    public class ImageSourceConverter : IValueConverter
     {
         string root = Directory.GetCurrentDirectory();
         string ImageDir => Path.Combine(root, "Images");
@@ -18,7 +21,17 @@ namespace CS_WPF_Lab9_Rental_Housing.Infastructure
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return string.Empty;
-            return Path.Combine(ImageDir, (string)value);
+
+            string photoPath = Path.Combine(ImageDir, (string)value);
+            var image = new BitmapImage();
+            using(var stram = File.OpenRead(photoPath))
+            {
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = stram;
+                image.EndInit();
+            }
+            return image;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

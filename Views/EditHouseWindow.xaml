@@ -7,7 +7,7 @@
         xmlns:cmd="clr-namespace:CS_WPF_Lab9_Rental_Housing.Commands"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="EditHouseWindow" Height="500" Width="400">
+        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="400">
     <Grid Name="Grid_MainChangeHouse" Background="{StaticResource Gray_LGBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>

@@ -24,6 +24,19 @@
         <Setter Property="Margin" Value="50 10 50 10"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
+
+    <Style x:Key="ListBoxPhotosEditWindowStyle" TargetType="ListBox">
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     
     <!--Buttons-->
     <!--Style for editing window buttons-->
