@@ -87,11 +87,15 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             CurrentPhoto = null;
             VisibilityNavigationBtn = Visibility.Collapsed;
 
-            if (h != null && h.Apartments != null && h.Apartments.Count > 0)
+            if(h != null)
             {
-                foreach (Apartment ap in h.Apartments) Apartments.Add(ap);
                 DetailInfo = h.ToString(full: true);
-            }
+                if (h.Apartments != null && h.Apartments.Count > 0)
+                {
+                    foreach (Apartment ap in h.Apartments) Apartments.Add(ap);
+
+                }
+            }           
             else { DetailInfo = string.Empty; }
             SelectedApartment = null;
         }
@@ -213,17 +217,32 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             new RelayCommand(addButtonExecuted);
 
         /// <summary>
-        /// Executor for the Edit command 
+        /// Executor for the AddCommand command 
         /// </summary>
         private void addButtonExecuted(object obj)
         {
-            string title = "Создание";
-            MessageBox.Show("Создать", title);
-            
+            if(SelectedHouses == null)
+            {
+                addHouse();
+            }
+            else
+            {
+                ChoiceAddWindow choiceAddWindow = new ChoiceAddWindow()
+                {
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                };
+                choiceAddWindow.ShowDialog();
+                var choice = choiceAddWindow.Choice;
+
+                if (choice == null) return;
+                if (choice == "House") addHouse();
+                if (choice == "Apartment") addApartment();
+            }
+                     
         }
 
         /// <summary>
-        /// Executor for the Edit command 
+        /// Executor for the EditCommand command 
         /// </summary>
         private void editButtonExecuted(object obj)
         {
@@ -240,7 +259,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         }
 
         /// <summary>
-        /// Executor for the Delete command 
+        /// Executor for the DeleteCommand command 
         /// </summary>
         private void deleteButtonExecuted(object obj)
         {
@@ -354,8 +373,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             {
                 houseManager.UpdateHouse(editHouseWindow.SelectedHouse);
                 houseManager.SaveChanges();
-                Houses.Clear();
-                foreach(House house in houseManager.GetAllHouses(true)) Houses.Add(house);
+                Reload();
             }
             return result == true;  
         }
@@ -367,7 +385,6 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         public bool EditApartment()
         {
             if (SelectedApartment == null) return false;
-            int apId = SelectedApartment.ApartmentId;
 
             EditApartmentWindow editApartWindow = new EditApartmentWindow(SelectedApartment);
             bool? result = editApartWindow.ShowDialog();
@@ -376,24 +393,83 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             { 
                 apartmentManager.UpdateApartment(editApartWindow.SelectedApartment);
                 apartmentManager.SaveChanges();
-                if(SelectedHouses != null)
+                Reload();         
+            }
+            return result ==true;
+        }
+
+        public void addHouse()
+        {
+            EditHouseWindow editHouseWindow = new EditHouseWindow();
+            bool? result = editHouseWindow.ShowDialog();
+
+            if (result == true)
+            {
+                houseManager.AddHouse(editHouseWindow.SelectedHouse);
+                houseManager.SaveChanges();
+                Reload();
+            }
+        }
+
+        public void addApartment()
+        {
+            EditApartmentWindow editApartWindow = new EditApartmentWindow(SelectedHouses!);
+            bool? result = editApartWindow.ShowDialog();
+
+            if (result == true)
+            {
+                apartmentManager.AddApartment(SelectedHouses!.HouseId,editApartWindow.SelectedApartment);
+                apartmentManager.SaveChanges();
+                Reload();
+            }
+
+        }
+        #endregion
+
+        #endregion
+        /// <summary>
+        /// Reloads information from the database and overwrites the ListView.
+        /// Sets the user selection to the position before reloading, if possible.
+        /// </summary>
+        public void Reload()
+        {
+            int? SelectedHouseId = null;
+            int? SelectedApartmentId = null;
+            
+            if(SelectedHouses != null) SelectedHouseId = SelectedHouses.HouseId;
+            if(SelectedApartment != null) SelectedApartmentId = SelectedApartment.ApartmentId;
+
+            Houses.Clear();
+            Apartments.Clear();
+            Photos.Clear();
+            SelectedHouses = null;
+            SelectedApartment = null;
+
+            foreach(House house in houseManager.GetAllHouses(true)) Houses.Add(house);
+
+            if (SelectedHouseId != null)
+            {
+                foreach(House house in Houses)
                 {
-                    Apartments.Clear();
-                    foreach (Apartment ap in SelectedHouses.Apartments) Apartments.Add(ap);
+                    if(house.HouseId == SelectedHouseId)
+                    {
+                        SelectedHouses = house;
+                        selectHouseExecuted(house);
+                    }
+                }
+                
+                if(SelectedApartmentId != null)
+                {
                     foreach(Apartment ap in Apartments)
                     {
-                        if(ap.ApartmentId == apId)
+                        if(SelectedApartmentId == ap.ApartmentId)
                         {
                             SelectedApartment = ap;
                             selectApartmentExecuted(ap);
                         }
                     }
-                } 
+                }
             }
-            return result ==true;
         }
-        #endregion
-
-        #endregion
     }
 }
