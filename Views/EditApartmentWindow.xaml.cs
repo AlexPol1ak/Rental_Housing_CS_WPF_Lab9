@@ -433,8 +433,8 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                         break;
 
                     case nameof(Floor):
-                        if (Floor < 0)
-                            error = "Этаж должен быть не отрицательным числом.";
+                        if (Floor <=0)
+                            error = "Этаж должен быть не отрицательным числом и не равным 0.";
                         break;
 
                     case nameof(CountRooms):
