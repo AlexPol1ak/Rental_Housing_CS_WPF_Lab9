@@ -98,7 +98,8 @@
                          Margin="15 7 15 7" MaxLength="10">
                     <TextBox.Text>
                         <Binding Path="Number" Mode="TwoWay" 
-                                 UpdateSourceTrigger="PropertyChanged">
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 Converter="{StaticResource NullConverter}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule/>
                             </Binding.ValidationRules>
@@ -112,7 +113,8 @@
                          MaxLength="3">
                     <TextBox.Text>
                         <Binding Path="Floor" Mode="TwoWay" 
-                                UpdateSourceTrigger="PropertyChanged">
+                                UpdateSourceTrigger="PropertyChanged"
+                                  Converter="{StaticResource NullConverter}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule/>
                             </Binding.ValidationRules>
@@ -126,7 +128,8 @@
                          MaxLength="3">
                     <TextBox.Text>
                         <Binding Path="CountRooms" Mode="TwoWay" 
-                                 UpdateSourceTrigger="PropertyChanged">
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 Converter="{StaticResource NullConverter}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule/>
                             </Binding.ValidationRules>
@@ -140,7 +143,8 @@
                          MaxLength="10">
                     <TextBox.Text>
                         <Binding Path="Area" Mode="TwoWay" 
-                                UpdateSourceTrigger="PropertyChanged">
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 Converter="{StaticResource NullConverter}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule/>
                             </Binding.ValidationRules>

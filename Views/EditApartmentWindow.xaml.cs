@@ -63,6 +63,8 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             InitializeComponent();        
             SelectedHouse = house;
             SelectedApartment = new Apartment();
+            SelectedApartment.House = house;
+            SelectedApartment.Photos = new List<Photo>();
             installSettings();
         }
 
@@ -77,8 +79,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             InitializeComponent();
             SelectedHouse = apartment.House;
             SelectedApartment = apartment;
-            installSettings();
-            
+            installSettings();           
         }
 
         /// <summary>
