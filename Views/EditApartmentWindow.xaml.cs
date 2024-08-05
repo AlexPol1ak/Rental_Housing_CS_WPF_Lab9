@@ -1,9 +1,11 @@
 ﻿using CS_WPF_Lab9_Rental_Housing.Commands;
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,6 +17,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -25,9 +28,19 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
     /// </summary>
     public partial class EditApartmentWindow : Window, IDataErrorInfo
     {
+        private string root = Directory.GetCurrentDirectory();
+        private string photoDir => System.IO.Path.Combine(root, "Images");
+
+        //For temporary storage of added photos.
+        private List<Photo> tempAddedNewPhoto = new();
+        private List<FileInfo> tempAddedNewPhotoFileInfo = new();
+        // To temporarily store photos sent for deletion
+        private List<Photo> tempDeletedPhoto = new();
+        private List<FileInfo> tempDeletedPhotoFileINfo = new();
+
+        // Objects accepted for change
         private House _selectedHouse;
         private Apartment _selectedApartment;
-
         public House SelectedHouse
         {
             get { return _selectedHouse; }
@@ -39,25 +52,51 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             private set { _selectedApartment = value; }
         }
 
+        /// <summary>
+        /// A constructor to create a new apartment.
+        /// </summary>
+        /// <param name="house">House object</param>
         public EditApartmentWindow(House house)
         {
+            this.Closing += EditApartmentWindowClosing;
             TitleTextAp = "Добавить квартиру";
             InitializeComponent();        
             SelectedHouse = house;
             SelectedApartment = new Apartment();
-            _installSettings();
-            ReadData();
+            installSettings();
         }
 
+        /// <summary>
+        /// Builder to create to edit an existing apartment.
+        /// </summary>
+        /// <param name="apartment">Apartment object</param>
         public EditApartmentWindow(Apartment apartment)
         {
+            this.Closing += EditApartmentWindowClosing;
             TitleTextAp = "Редактировать квартиру";
             InitializeComponent();
             SelectedHouse = apartment.House;
             SelectedApartment = apartment;
-            _installSettings();
-            ReadData();
+            installSettings();
             
+        }
+
+        /// <summary>
+        /// Event handler for the event when the window is closed.
+        /// </summary>
+        private void EditApartmentWindowClosing(object? sender, CancelEventArgs e)
+        {
+            // Delete added apartments if the save button is not pressed.
+            if (this.DialogResult != true)
+            {
+                if (tempAddedNewPhotoFileInfo.Count > 0)
+                {
+                    foreach (FileInfo file in tempAddedNewPhotoFileInfo)
+                    {
+                        file.Delete();
+                    }
+                }
+            }
         }
 
         #region Dependency properties
@@ -147,17 +186,17 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             get { return (ObservableCollection<Photo>)GetValue(PhotosProperty); }
             set { SetValue(PhotosProperty, value); }
         }
-
         public static readonly DependencyProperty PhotosProperty =
             DependencyProperty.Register(nameof(Photos), typeof(ObservableCollection<Photo>),
-                typeof(EditApartmentWindow), new PropertyMetadata(default(ObservableCollection<Photo>)));
+                typeof(EditApartmentWindow), new PropertyMetadata(new ObservableCollection<Photo>()));
 
         #endregion
 
-        #region Supporting methods
-        public void _installSettings()
-        {
+        #region Commands
 
+        private void setCommands()
+        {
+            // Commands to save all entered information.
             CommandBinding commandBindingSave = new CommandBinding(
                 ApplicationCommands.Save,
                 (s, e) =>
@@ -168,7 +207,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                 },
                 (s, e) => { e.CanExecute = !HasError(); }
                 );
-
+            //Exit command
             CommandBinding commandBindingExit = new CommandBinding(
                 WindowCommands.Exit,
                 (s, e) => { this.Close(); }
@@ -179,11 +218,114 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
 
         }
 
-        private void changeHouse()
+        private ICommand _addPhotoCommnad;
+        public ICommand AddPhotoCommnad => _addPhotoCommnad ??= new RelayCommand
+            (
+                addPhotoExecuted,
+                (obj) => { return Photos.Count < 10; }
+            );
+
+      
+        private ICommand _deletePhohoCommnad;
+        public ICommand DeletePhotoCommnad => _deletePhohoCommnad ??= new RelayCommand
+            (
+                deletePhotoExecuted,
+                (obj) => { return obj != null && Photos.Count > 0; }
+                
+            );
+
+        /// <summary>
+        /// Performer for the team to add a photo. 
+        /// Opens the file selection window and adds the selected photos.
+        /// </summary>
+        private void addPhotoExecuted(object obj)
         {
-            throw new NotImplementedException();
+            // Open the file selection window.
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;";
+            openFileDialog.Multiselect = true;
+            openFileDialog.CheckPathExists = true;
+            openFileDialog.ValidateNames = true;
+
+            if (openFileDialog.ShowDialog() == true)
+            // If new files are selected and their total number (old + new) does not exceed 10.
+            {
+                if (openFileDialog.FileNames.Length + Photos.Count > 10)
+                {
+                    MessageBox.Show(
+                        "Общее количество фотографий не должно привышать 10", 
+                        "Загрузка фотографий", 
+                        MessageBoxButton.OK, MessageBoxImage.Information
+                        );
+                }
+                else
+                {
+                    if(openFileDialog.FileNames.Length > 0)
+                    {
+                        foreach(string fileName in openFileDialog.FileNames)
+                        {   
+                            // Send files to be saved.
+                            addNewPhoto(fileName);
+                        }
+                    }
+                }
+            }
         }
 
+        /// <summary>
+        /// Executor of the delete photos command. Sends files for deletion
+        /// </summary>
+        /// <param name="obj">Parameter from ListBox</param>
+        private void deletePhotoExecuted(object obj)
+        {
+            Photo photo = (Photo) obj;
+            deletePhoto(photo);          
+        }
+        #endregion
+
+        #region Supporting methods
+        /// <summary>
+        /// Sets the commands for the buttons . Reads data from the object.
+        /// </summary>
+        public void installSettings()
+        {
+            setCommands();
+            ReadData();
+        }
+
+        /// <summary>
+        /// Transfers the entered information from the input fields to the object. 
+        /// Saves the changes. Deletes photos sent for deletion.
+        /// </summary>
+        private void changeHouse()
+        {
+            SelectedApartment.Number = Number;
+            SelectedApartment.Floor = Floor;
+            SelectedApartment.CountRooms = CountRooms;
+            SelectedApartment.Area = Area;
+            SelectedApartment.Owner = OwnerFIO;
+            SelectedApartment.OwnerTel = OwnerTel;
+            SelectedApartment.Price = Price;
+
+            //Photo transfers.
+            SelectedApartment.Photos.Clear();
+            if(Photos.Count > 0)
+            {
+                foreach(Photo photo in Photos)
+                {
+                    SelectedApartment.Photos.Add(photo);
+                }
+            }
+            // Deleting photos moved to a deleted collection
+            if (tempDeletedPhotoFileINfo.Count > 0)
+            {
+                foreach(FileInfo file in tempDeletedPhotoFileINfo) { file.Delete(); }
+            }
+        }
+
+        /// <summary>
+        /// Reads data from the object into the dependency properties.
+        /// </summary>
         private void ReadData()
         {
             string houseInfoText = $"Город: {SelectedHouse.City}, " +
@@ -199,11 +341,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             OwnerFIO = SelectedApartment.Owner;
             OwnerTel = SelectedApartment.OwnerTel;
             Price = SelectedApartment.Price;
-            _readPhotos();
-        }
 
-        private void _readPhotos()
-        {
             if (SelectedApartment.Photos != null && SelectedApartment.Photos.Count > 0)
             {
                 foreach (Photo photo in SelectedApartment.Photos)
@@ -212,7 +350,56 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                 }
             }
         }
+        /// <summary>
+        /// Adding a new photo
+        /// </summary>
+        /// <param name="path">Full path</param>
+        /// <returns></returns>
+        private bool addNewPhoto(string path)
+        {
+            FileInfo photoFileInfo = new FileInfo(path);
+            if (!photoFileInfo.Exists) return false;
+
+            Photo photo = new Photo();
+            photo.PhotoName = photoFileInfo.Name;
+            photo.Apartment = SelectedApartment;
+
+            string distinationPath = System.IO.Path.Combine(photoDir, photo.PhotoName);
+            var photoCopyFile = photoFileInfo.CopyTo(distinationPath, true);
+
+            // Add a photo to the collection of temporary new photos.
+            tempAddedNewPhotoFileInfo.Add(photoCopyFile);
+            tempAddedNewPhoto.Add(photo);
+            Photos.Add(photo);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Deleting a photo.
+        /// </summary>
+        /// <param name="photo">Phoyo object</param>
+        /// <returns></returns>
+        private bool deletePhoto(Photo photo)
+        {
+            string distinationPath = System.IO.Path.Combine(photoDir, photo.PhotoName);
+            FileInfo photoFileInfo = new FileInfo(distinationPath);
+
+            //Delete a photo from the collection of displayed photos
+            if (Photos.Contains(photo)) Photos.Remove(photo);
+
+            // Remove a photo from the collection of newly added photos,
+            // if they are there (If photos are added in the same window)
+            if (tempAddedNewPhoto.Contains(photo)) tempAddedNewPhoto.Remove(photo);
+            if(tempAddedNewPhotoFileInfo.Contains(photoFileInfo)) tempAddedNewPhotoFileInfo.Remove(photoFileInfo);
+            // Add photos to the temporary collection of photos to be deleted.
+            if (!tempDeletedPhoto.Contains(photo)) tempDeletedPhoto.Add(photo);
+            if(!tempAddedNewPhotoFileInfo.Contains(photoFileInfo)) tempDeletedPhotoFileINfo.Add(photoFileInfo);
+
+            return true;
+        }
         #endregion
+
         #region Validation data
         /// <summary>
         /// Checks the correctness of the data entered by the user.
@@ -263,8 +450,8 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                         break;
 
                     case nameof(OwnerTel):
-                        if (OwnerTel != null && OwnerTel < 1000000 || OwnerTel > 999999999999)
-                            error = "Телефонный номер должен быть в формате 7 или 10 цифр (например, 1234567890).";
+                        if (OwnerTel != null && OwnerTel < 1000000 || OwnerTel > 9999999999999)
+                            error = "Телефонный номер должен быть в формате 7 или 13 цифр (например, 1234567890).";
                         break;
 
                     case nameof(Price):

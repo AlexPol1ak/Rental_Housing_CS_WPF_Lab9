@@ -205,7 +205,7 @@
                     <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
                 <!--Show Images-->
-                <ListBox ItemsSource="{Binding Photos}" 
+                <ListBox Name="ListBox_Photos" ItemsSource="{Binding Photos}" 
                          Style="{StaticResource ListBoxPhotosEditWindowStyle}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -221,12 +221,19 @@
                 <!--Photos Control-->
                 <StackPanel Name="StP_PhotoButtons" Grid.Column="1" Orientation="Vertical"
                             VerticalAlignment="Center">
+                    
                     <Button Name="Btn_AddPhoto" Content="Добавить"
                             Style="{StaticResource ButtonSaveCancelStyle}"
-                            Margin="4"/>
+                            Margin="4"
+                            Command="{Binding AddPhotoCommnad}"
+                            />
                     <Button Name="Btn_DeletePhoto" Content="Удалить"
                             Style="{StaticResource ButtonSaveCancelStyle}"
-                            Margin="4"/>
+                            Margin="4"
+                            Command="{Binding DeletePhotoCommnad}"
+                            CommandParameter="{Binding ElementName=ListBox_Photos,
+                                               Path=SelectedItem}"/>
+                    
                 </StackPanel>
             </Grid>
         </GroupBox>

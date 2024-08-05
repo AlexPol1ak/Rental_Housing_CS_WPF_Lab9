@@ -118,7 +118,6 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 if (Photos.Count > 0) CurrentPhoto = Photos[0];
 
             }
-
         }
         #endregion
 
@@ -285,6 +284,8 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         #endregion
 
         #region Encapsulated CRUD actions
+        // Auxiliary methods used in commands.
+
         /// <summary>
         /// Removes house from the database, from the linked collection, from the “selected item”.
         /// </summary>
@@ -338,6 +339,10 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             return result ;
         }
 
+        /// <summary>
+        /// Opens the house in a new window for editing.
+        /// </summary>
+        /// <returns></returns>
         public bool EditHouse()
         {
             if (SelectedHouses == null) return false;
@@ -355,9 +360,14 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             return result == true;  
         }
 
+        /// <summary>
+        /// Opens the apartment in a new window for editing.
+        /// </summary>
+        /// <returns></returns>
         public bool EditApartment()
         {
             if (SelectedApartment == null) return false;
+            int apId = SelectedApartment.ApartmentId;
 
             EditApartmentWindow editApartWindow = new EditApartmentWindow(SelectedApartment);
             bool? result = editApartWindow.ShowDialog();
@@ -365,11 +375,19 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             if (result == true) 
             { 
                 apartmentManager.UpdateApartment(editApartWindow.SelectedApartment);
-                //apartmentManager.SaveChanges();
+                apartmentManager.SaveChanges();
                 if(SelectedHouses != null)
                 {
                     Apartments.Clear();
                     foreach (Apartment ap in SelectedHouses.Apartments) Apartments.Add(ap);
+                    foreach(Apartment ap in Apartments)
+                    {
+                        if(ap.ApartmentId == apId)
+                        {
+                            SelectedApartment = ap;
+                            selectApartmentExecuted(ap);
+                        }
+                    }
                 } 
             }
             return result ==true;
