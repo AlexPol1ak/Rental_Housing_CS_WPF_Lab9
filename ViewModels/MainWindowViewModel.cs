@@ -14,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Navigation;
 using System.Windows.Controls;
 using CS_WPF_Lab9_Rental_Housing.Views;
+using CS_WPF_Lab9_Rental_Housing.Infastructure;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -208,7 +209,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
 
         public ICommand DeleteCommand => _deleteCommand ??=
-            new RelayCommand(deleteButtonExecuted, _hasObject);
+            new RelayCommand(deleteButtonExecutedAsync, _hasObject);
 
         public ICommand EditCommand => _editCommand ??=
             new RelayCommand(editButtonExecuted, _hasObject);
@@ -259,9 +260,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         }
 
         /// <summary>
-        /// Executor for the DeleteCommand command 
+        /// Async executor for the DeleteCommand command 
         /// </summary>
-        private void deleteButtonExecuted(object obj)
+        private async void deleteButtonExecutedAsync(object obj)
         {
             string title = "Удаление";
             // If a house is selected - delete the house.
@@ -272,13 +273,12 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    bool result2 =  DeleteHouse(SelectedHouses);
+                    bool result2 =  await DeleteHouse(SelectedHouses);
                     if(result2)
                     {
                         MessageBox.Show("Удалено!", title,
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
-                                      
                 }
             }
             // If an apartment is selected, delete the apartment.
@@ -290,7 +290,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    bool result2 = DeleteApartment(SelectedApartment);
+                    bool result2 = await DeleteApartmentAsync(SelectedApartment);
                     if (result2)
                     {
                         MessageBox.Show("Удалено!", title,
@@ -299,7 +299,6 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 }
             }                
         }
-
         #endregion
 
         #region Encapsulated CRUD actions
@@ -310,10 +309,10 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         /// </summary>
         /// <param name="house">House object</param>
         /// <returns>True - if the deletion was successful, otherwise False.</returns>
-        public bool DeleteHouse(House house)
+        public async Task<bool> DeleteHouse(House house)
         {
             bool result = false;
-
+            await AsyncPhotoFile.DeletePhotoFileAsync(house);
             if (houseManager.ContainsHouse(house))
             {
                 result = houseManager.DeleteHouse(house.HouseId);
@@ -333,13 +332,15 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         }
 
         /// <summary>
-        /// Deletes an apartment from the database, from the linked collection, from the “selected item”. 
+        ///  Async deletes an apartment from the database, from the linked collection, from the “selected item”. 
         /// </summary>
         /// <param name="apartment">Apartment object</param>
         /// <returns>True - if the deletion was successful, otherwise False.</returns>
-        public bool DeleteApartment(Apartment apartment)
+        public async Task<bool> DeleteApartmentAsync(Apartment apartment)
         {
+            
             bool result = false;
+            await AsyncPhotoFile.DeletePhotoFileAsync(apartment);
 
             if (apartmentManager.ContainsApartment(apartment))
             {
@@ -355,6 +356,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 SelectedApartment = null;
                 result = true;
             }
+            Reload();
             return result ;
         }
 
