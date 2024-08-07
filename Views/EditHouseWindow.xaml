@@ -142,7 +142,8 @@
             <Button Name="Btn_Save" Grid.Column="1"
                     Style="{StaticResource ButtonSaveCancelStyle}"
                     Command="ApplicationCommands.Save"
-                    BorderBrush="DarkGreen">
+                    BorderBrush="DarkGreen"
+                    ToolTip="Сохранить и закрыть">
                 <Button.Content>
                     <mdc:PackIcon Kind="ContentSave" Width="24" Height="24"
                                   Foreground="{Binding 
@@ -155,7 +156,8 @@
             <Button Name="Btn_Cancel" Grid.Column="2"
                     Style="{StaticResource ButtonSaveCancelStyle}"
                     Command="cmd:WindowCommands.Exit"
-                    BorderBrush="DarkRed">
+                    BorderBrush="DarkRed"
+                    ToolTip="Сбросить изменения и закрыть">
                 <Button.Content>
                     <mdc:PackIcon Kind="CloseBox" Width="24" Height="24"
                                   Foreground="{Binding 

@@ -229,7 +229,8 @@
                             Style="{StaticResource ButtonSaveCancelStyle}"
                             Margin="4"
                             Command="{Binding AddPhotoCommnad}"
-                            BorderBrush="DarkBlue">
+                            BorderBrush="DarkBlue"
+                            ToolTip="Добавить изображение">
                         <Button.Content>
                             <mdc:PackIcon Kind="ImagePlus" Width="24" Height="24"
                                           Foreground="{Binding ElementName=Btn_AddPhoto,
@@ -243,7 +244,8 @@
                             Margin="4"
                             Command="{Binding DeletePhotoCommnad}"
                             CommandParameter="{Binding ElementName=ListBox_Photos,
-                                               Path=SelectedItem}">
+                                               Path=SelectedItem}"
+                            ToolTip="Удалить изображение">
                         <Button.Content>
                             <mdc:PackIcon Kind="ImageMinus" Width="24" Height="24"
                                           Foreground="{Binding ElementName=Btn_DeletePhoto,
@@ -264,6 +266,7 @@
                     Style="{StaticResource ButtonSaveCancelStyle}"
                     Command="ApplicationCommands.Save"
                     BorderBrush="DarkGreen"
+                    ToolTip="Сохранить и закрыть"
                     >
                 <Button.Content>
                     <mdc:PackIcon Kind="ContentSaveAdd" Width="24" Height="24"
@@ -276,7 +279,8 @@
             <Button Name="Btn_Cancel" Grid.Column="2"
                     Style="{StaticResource ButtonSaveCancelStyle}"
                     Command="cmd:WindowCommands.Exit"
-                    BorderBrush="DarkRed">
+                    BorderBrush="DarkRed"
+                    ToolTip="Сбросить изменения и закрыть">
                 <Button.Content>
                     <mdc:PackIcon Kind="CloseBox" Width="24" Height="24"
                                   Foreground="{Binding ElementName=Btn_Cancel,
