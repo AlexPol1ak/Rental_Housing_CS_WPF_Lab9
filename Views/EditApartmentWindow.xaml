@@ -60,7 +60,7 @@
                            >
                     <Run Text="Номер"/>
                     <LineBreak/>
-                    <Run Text="Квартиры:"/>
+                    <Run Text="квартиры:"/>
                 </TextBlock>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Center"

@@ -29,7 +29,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             ReadData();
         }
 
-        public EditHouseWindow(House house) : this()
+        public EditHouseWindow(House house)
         {
             TitleText = "Редактировать дом";
 

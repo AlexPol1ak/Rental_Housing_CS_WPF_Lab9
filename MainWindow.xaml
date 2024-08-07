@@ -139,7 +139,7 @@
                                     Style=
                                     "{StaticResource ListViewColumnHeaderTextstyle}"
                                 >
-                                   Номер <LineBreak/> кваритры
+                                   Номер <LineBreak/>квартиры
                                 </TextBlock>
                             </GridViewColumn.Header>
                         </GridViewColumn>
