@@ -1,20 +1,9 @@
 ﻿using CS_WPF_Lab9_Rental_Housing.Commands;
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CS_WPF_Lab9_Rental_Housing.Views
 {
@@ -34,7 +23,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         {
             TitleText = "Добавить новый дом";
 
-            InitializeComponent();       
+            InitializeComponent();
             SelectedHouse = new House();
             _installSettings();
             ReadData();
@@ -140,7 +129,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         public bool HasElevator
         {
             get { return (bool)GetValue(HasElevatorProperty); }
-            set {  SetValue(HasElevatorProperty, value);}
+            set { SetValue(HasElevatorProperty, value); }
         }
         public static readonly DependencyProperty HasElevatorProperty =
             DependencyProperty.Register(nameof(HasElevator), typeof(bool),
@@ -294,8 +283,8 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                     case nameof(BuildingYear):
                         if (BuildingYear < 1920 || BuildingYear > DateTime.Now.Year)
                             error = $"Год постройки должен быть между 1920 и {DateTime.Now.Year}.";
-                        break;  
-                    
+                        break;
+
                 }
                 CommandManager.InvalidateRequerySuggested();
                 return error;

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
 namespace CS_WPF_Lab9_Rental_Housing.Infastructure
@@ -24,7 +16,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Infastructure
 
             string photoPath = Path.Combine(ImageDir, (string)value);
             var image = new BitmapImage();
-            using(var stram = File.OpenRead(photoPath))
+            using (var stram = File.OpenRead(photoPath))
             {
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad;

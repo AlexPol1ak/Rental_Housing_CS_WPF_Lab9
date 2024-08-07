@@ -1,20 +1,12 @@
-﻿using CS_WPF_Lab9_Rental_Housing.Business.Managers;
-using CS_WPF_Lab9_Rental_Housing.Business.Infastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
-using System.Windows.Input;
+﻿using CS_WPF_Lab9_Rental_Housing.Business.Infastructure;
+using CS_WPF_Lab9_Rental_Housing.Business.Managers;
 using CS_WPF_Lab9_Rental_Housing.Commands;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Navigation;
-using System.Windows.Controls;
-using CS_WPF_Lab9_Rental_Housing.Views;
+using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
 using CS_WPF_Lab9_Rental_Housing.Infastructure;
+using CS_WPF_Lab9_Rental_Housing.Views;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 {
@@ -88,7 +80,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             CurrentPhoto = null;
             VisibilityNavigationBtn = Visibility.Collapsed;
 
-            if(h != null)
+            if (h != null)
             {
                 DetailInfo = h.ToString(full: true);
                 if (h.Apartments != null && h.Apartments.Count > 0)
@@ -96,7 +88,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                     foreach (Apartment ap in h.Apartments) Apartments.Add(ap);
 
                 }
-            }           
+            }
             else { DetailInfo = string.Empty; }
             SelectedApartment = null;
         }
@@ -205,8 +197,8 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         private ICommand _editCommand;
         private ICommand _addCommand;
         private ICommand _exitCommand;
-        private Func<object, bool> _hasObject => 
-            (id)=> SelectedHouses != null || SelectedApartment != null;
+        private Func<object, bool> _hasObject =>
+            (id) => SelectedHouses != null || SelectedApartment != null;
 
 
         public ICommand DeleteCommand => _deleteCommand ??=
@@ -226,7 +218,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         /// </summary>
         private void addButtonExecuted(object obj)
         {
-            if(SelectedHouses == null)
+            if (SelectedHouses == null)
             {
                 addHouse();
             }
@@ -243,7 +235,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 if (choice == "House") addHouse();
                 if (choice == "Apartment") addApartment();
             }
-                     
+
         }
 
         /// <summary>
@@ -252,7 +244,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         private void editButtonExecuted(object obj)
         {
             if (SelectedApartment == null && SelectedHouses != null)
-            {            
+            {
                 EditHouse();
                 return;
             }
@@ -277,8 +269,8 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    bool result2 =  await DeleteHouse(SelectedHouses);
-                    if(result2)
+                    bool result2 = await DeleteHouse(SelectedHouses);
+                    if (result2)
                     {
                         MessageBox.Show("Удалено!", title,
                             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -289,7 +281,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             if (SelectedApartment != null)
             {
                 var result = MessageBox.Show(
-                    $"Удалить кваритру ?\n{SelectedApartment.ToString()}",title, 
+                    $"Удалить кваритру ?\n{SelectedApartment.ToString()}", title,
                     MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
@@ -301,7 +293,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
-            }                
+            }
         }
         #endregion
 
@@ -322,7 +314,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
                 result = houseManager.DeleteHouse(house.HouseId);
                 houseManager.SaveChanges();
             }
-            if(Houses.Contains(house))
+            if (Houses.Contains(house))
             {
                 result = Houses.Remove(house);
             }
@@ -342,7 +334,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         /// <returns>True - if the deletion was successful, otherwise False.</returns>
         public async Task<bool> DeleteApartmentAsync(Apartment apartment)
         {
-            
+
             bool result = false;
             await AsyncPhotoFile.DeletePhotoFileAsync(apartment);
 
@@ -353,15 +345,15 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             }
             if (Apartments.Contains(apartment))
             {
-                result = Apartments.Remove(apartment);               
+                result = Apartments.Remove(apartment);
             }
-            if(SelectedApartment == apartment)
+            if (SelectedApartment == apartment)
             {
                 SelectedApartment = null;
                 result = true;
             }
             Reload();
-            return result ;
+            return result;
         }
 
         /// <summary>
@@ -375,13 +367,13 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             EditHouseWindow editHouseWindow = new EditHouseWindow(SelectedHouses);
             bool? result = editHouseWindow.ShowDialog();
 
-            if(result == true)
+            if (result == true)
             {
                 houseManager.UpdateHouse(editHouseWindow.SelectedHouse);
                 houseManager.SaveChanges();
                 Reload();
             }
-            return result == true;  
+            return result == true;
         }
 
         /// <summary>
@@ -395,13 +387,13 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             EditApartmentWindow editApartWindow = new EditApartmentWindow(SelectedApartment);
             bool? result = editApartWindow.ShowDialog();
 
-            if (result == true) 
-            { 
+            if (result == true)
+            {
                 apartmentManager.UpdateApartment(editApartWindow.SelectedApartment);
                 apartmentManager.SaveChanges();
-                Reload();         
+                Reload();
             }
-            return result ==true;
+            return result == true;
         }
 
         public void addHouse()
@@ -424,7 +416,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
             if (result == true)
             {
-                apartmentManager.AddApartment(SelectedHouses!.HouseId,editApartWindow.SelectedApartment);
+                apartmentManager.AddApartment(SelectedHouses!.HouseId, editApartWindow.SelectedApartment);
                 apartmentManager.SaveChanges();
                 Reload();
             }
@@ -441,9 +433,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         {
             int? SelectedHouseId = null;
             int? SelectedApartmentId = null;
-            
-            if(SelectedHouses != null) SelectedHouseId = SelectedHouses.HouseId;
-            if(SelectedApartment != null) SelectedApartmentId = SelectedApartment.ApartmentId;
+
+            if (SelectedHouses != null) SelectedHouseId = SelectedHouses.HouseId;
+            if (SelectedApartment != null) SelectedApartmentId = SelectedApartment.ApartmentId;
 
             Houses.Clear();
             Apartments.Clear();
@@ -451,24 +443,24 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
             SelectedHouses = null;
             SelectedApartment = null;
 
-            foreach(House house in houseManager.GetAllHouses(true)) Houses.Add(house);
+            foreach (House house in houseManager.GetAllHouses(true)) Houses.Add(house);
 
             if (SelectedHouseId != null)
             {
-                foreach(House house in Houses)
+                foreach (House house in Houses)
                 {
-                    if(house.HouseId == SelectedHouseId)
+                    if (house.HouseId == SelectedHouseId)
                     {
                         SelectedHouses = house;
                         selectHouseExecuted(house);
                     }
                 }
-                
-                if(SelectedApartmentId != null)
+
+                if (SelectedApartmentId != null)
                 {
-                    foreach(Apartment ap in Apartments)
+                    foreach (Apartment ap in Apartments)
                     {
-                        if(SelectedApartmentId == ap.ApartmentId)
+                        if (SelectedApartmentId == ap.ApartmentId)
                         {
                             SelectedApartment = ap;
                             selectApartmentExecuted(ap);

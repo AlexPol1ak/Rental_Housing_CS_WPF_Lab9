@@ -1,12 +1,6 @@
 ﻿
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace CS_WPF_Lab9_Rental_Housing.Infastructure
 {
@@ -36,7 +30,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Infastructure
                     {
                         Task task = Task.Run(() => photoFile.Delete());
                         tasks.Add(task);
-                        result = true;  
+                        result = true;
                     }
                 }
                 await Task.WhenAll(tasks);
@@ -68,7 +62,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Infastructure
             List<Task<bool>> tasks = new List<Task<bool>>();
             if (house != null && house.Apartments != null)
             {
-                foreach(Apartment ap in house.Apartments)
+                foreach (Apartment ap in house.Apartments)
                 {
                     var task = DeletePhotoFileAsync(ap);
                     tasks.Add(task);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace CS_WPF_Lab9_Rental_Housing.Commands
 {
@@ -12,7 +7,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Commands
         private Action<object> _execute;
         private Func<object, bool> _canExecute;
 
-        public RelayCommand(Action<object>execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -21,7 +16,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Commands
         public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
-            remove {  CommandManager.RequerySuggested -= value;}
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         public bool CanExecute(object? parameter)
