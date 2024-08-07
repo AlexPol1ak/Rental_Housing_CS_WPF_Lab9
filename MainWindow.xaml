@@ -9,7 +9,8 @@
         xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Учет жилых помещений" Height="500" Width="800">
+        Title="Учет жилых помещений" Height="500" Width="800"
+        Icon="Resources/favicon.ico">
     <Window.Resources>
         <inf:ImageSourceConverter x:Key="ImageSourceConverter"/>
     </Window.Resources>

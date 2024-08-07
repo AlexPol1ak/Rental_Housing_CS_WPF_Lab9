@@ -9,7 +9,7 @@
         xmlns:mdc="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="600"
+        Title="{Binding TitleTextAp, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="600"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <inf:ImageSourceConverter x:Key="ImageSourceConverter"/>

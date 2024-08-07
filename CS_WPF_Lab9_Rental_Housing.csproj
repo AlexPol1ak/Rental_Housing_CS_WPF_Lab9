@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
     <None Remove="Images\7.jpg" />
     <None Remove="Images\8.jpg" />
     <None Remove="Images\9.jpg" />
+    <None Remove="Resources\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +78,10 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\favicon.ico" />
   </ItemGroup>
 
 </Project>
