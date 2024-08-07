@@ -464,5 +464,6 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             }
         }
         #endregion
+        
     }
 }

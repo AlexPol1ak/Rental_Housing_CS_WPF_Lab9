@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing.Views" 
         xmlns:cmd="clr-namespace:CS_WPF_Lab9_Rental_Housing.Commands"
         xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure"
+        xmlns:mdc="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="400">
+        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="400"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <inf:NullConverter x:Key="NullConverter"/>
     </Window.Resources>
@@ -136,13 +138,31 @@
 
         <UniformGrid Name="UnGrid_Buttons" Grid.Row="7" Grid.ColumnSpan="2" 
                      Rows="1" Columns="2">
-            <Button Name="Btn_Save" Grid.Column="1" Content="Сохранить"
+
+            <Button Name="Btn_Save" Grid.Column="1"
                     Style="{StaticResource ButtonSaveCancelStyle}"
-                    Command="ApplicationCommands.Save"/>
-            <Button Name="Btn_Cancel" Grid.Column="2" Content="Выход"
+                    Command="ApplicationCommands.Save"
+                    BorderBrush="DarkGreen">
+                <Button.Content>
+                    <mdc:PackIcon Kind="ContentSave" Width="24" Height="24"
+                                  Foreground="{Binding 
+                                                ElementName=Btn_Save,   
+                                                Path=BorderBrush}"
+                                  FontWeight="Bold"/>
+                </Button.Content>
+            </Button>
+            
+            <Button Name="Btn_Cancel" Grid.Column="2"
                     Style="{StaticResource ButtonSaveCancelStyle}"
                     Command="cmd:WindowCommands.Exit"
-                    />
+                    BorderBrush="DarkRed">
+                <Button.Content>
+                    <mdc:PackIcon Kind="CloseBox" Width="24" Height="24"
+                                  Foreground="{Binding 
+                                               ElementName=Btn_Cancel,                                       Path=BorderBrush}"
+                                  FontWeight="Bold"/>
+                </Button.Content>
+            </Button>
 
         </UniformGrid>
 

@@ -4,7 +4,13 @@
         <ResourceDictionary Source="BaseStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="GroupBoxHeaderTextStyle" TargetType="TextBlock">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontCenturySchoolbook}"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
 
+    </Style>
     <!--Style for TextBoxes in editing windows.-->
     <Style x:Key="TextBoxEditWindowStyle" TargetType="TextBox" BasedOn="{StaticResource CenterContentAligment}">
         <Setter Property="FontFamily" Value="{StaticResource FontCentaur}"/>
@@ -40,11 +46,9 @@
     
     <!--Buttons-->
     <!--Style for editing window buttons-->
-    <Style x:Key="ButtonSaveCancelStyle" TargetType="Button">
+    <Style x:Key="ButtonSaveCancelStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="FontFamily" Value="{StaticResource FontRageItalic}"/>
         <Setter Property="Margin" Value="25 20 25 15"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
 </ResourceDictionary>

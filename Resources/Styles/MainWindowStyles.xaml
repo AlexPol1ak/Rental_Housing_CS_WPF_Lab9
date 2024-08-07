@@ -8,7 +8,8 @@
     The base text for the column headers of the key screen. 
     (Дома, Кваритры, Инофрмация.
     -->
-    <Style x:Key="GroupBoxHeaderTextStyle" TargetType="TextBlock">
+    <Style x:Key="GroupBoxHeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource CenterAlignment}">
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontFamily" Value="{StaticResource FontCenturySchoolbook}"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="18"/>
@@ -28,6 +29,7 @@
     <Style x:Key="ListViewItemStyle" TargetType="ListViewItem" BasedOn="{StaticResource CenterContentAligment}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
     </Style>
 
     <!--Style for columns in ListView.-->
@@ -36,8 +38,7 @@
     </Style>
 
     <!--Style for text in columns headers.-->
-    <Style x:Key="ListViewColumnHeaderTextstyle" TargetType="TextBlock"
-           BasedOn="{StaticResource CenterAlignment}">
+    <Style x:Key="ListViewColumnHeaderTextstyle" TargetType="TextBlock" BasedOn="{StaticResource GroupBoxHeaderTextStyle}">
         <Setter Property="FontFamily" Value="{StaticResource FontCenturySchoolbook}"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="12"/>
@@ -51,8 +52,8 @@
     </Style>
 
     <!--Style for TextBlock detailed information about the record.-->
-    <Style x:Key="TextBoxDetailInfoStyle" TargetType="TextBlock"
-           BasedOn="{StaticResource GroupBoxHeaderTextStyle}">
+    <Style x:Key="TextBoxDetailInfoStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontCenturySchoolbook}"/>
         <Setter Property="Margin" Value="3"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="black"/>
@@ -86,7 +87,7 @@
 
     <!--Buttons-->
     <!--Style for control buttons-->
-    <Style x:Key="ControlBtnStyle" TargetType="Button">
+    <Style x:Key="ControlBtnStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Margin" Value="20 10 20 15"/>
     </Style>
 

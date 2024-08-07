@@ -24,7 +24,19 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
+        <Button Name="Btn_Exit"  Grid.Row="1" Grid.Column="2"
+                Margin="60 10 60 15"
+         Style="{StaticResource BaseButtonStyle}"
+         Command="{Binding ExitCommand}"
+         BorderBrush="Black">
+            <Button.Content>
+                <mdc:PackIcon Kind="ExitToApp" Width="24" Height="24"
+                       Foreground="BlanchedAlmond"
+                       FontWeight="Bold"/>
+            </Button.Content>
+        </Button>
+
         <!--#region HOUSES VIEW-->
         <GroupBox x:Name="GP_Houses" Grid.Row="0" Grid.Column="0"
                   Style="{StaticResource GroupBoxStyle}">
@@ -233,24 +245,37 @@
         <!--region CONTROL BUTTONS-->
         <UniformGrid Name="UG_HomeControlBtn" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                      Margin="5" Columns="3" Rows="1">
-            <Button Name="Btn_Add" Style="{StaticResource ControlBtnStyle}"
-                    Command="{Binding AddComand}">
+
+            <Button Name="Btn_Add"
+                    Style="{StaticResource ControlBtnStyle}"
+                    Command="{Binding AddComand}"                  
+                    >
                 <Button.Content>
-                    Add
+                    <mdc:PackIcon Kind="AddBold" Width="24" Height="24"
+                                  Foreground="AntiqueWhite"                          
+                                  FontWeight="Bold" Cursor="Hand"/>
                 </Button.Content>
             </Button>
 
-            <Button Name="Btn_Edit" Style="{StaticResource ControlBtnStyle}"
-                    Command="{Binding EditCommand}">
+            <Button Name="Btn_Edit" 
+                    Style="{StaticResource ControlBtnStyle}"
+                    Command="{Binding EditCommand}"
+                    BorderBrush="DarkGreen">
                 <Button.Content>
-                    edit
+                    <mdc:PackIcon Kind="Edit" Width="24" Height="24"
+                                  Foreground="AntiqueWhite"
+                                  FontWeight="Bold"/>
                 </Button.Content>
             </Button>
 
-            <Button Name="Btn_Del" Style="{StaticResource ControlBtnStyle}"
-                Command="{Binding DeleteCommand}">
+            <Button Name="Btn_Del" 
+                    Style="{StaticResource ControlBtnStyle}"
+                    Command="{Binding DeleteCommand}"
+                    BorderBrush="DarkRed">
                 <Button.Content>
-                    delete
+                    <mdc:PackIcon Kind="Delete" Width="24" Height="24"
+                                  Foreground="AntiqueWhite"
+                                  FontWeight="Bold"/>
                 </Button.Content>
             </Button>
         </UniformGrid>

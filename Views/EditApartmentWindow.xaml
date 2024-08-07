@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:CS_WPF_Lab9_Rental_Housing.Views"
         xmlns:inf="clr-namespace:CS_WPF_Lab9_Rental_Housing.Infastructure"
         xmlns:cmd="clr-namespace:CS_WPF_Lab9_Rental_Housing.Commands"
+        xmlns:mdc="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="600">
+        Title="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="600"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <inf:ImageSourceConverter x:Key="ImageSourceConverter"/>
         <inf:NullConverter x:Key="NullConverter"/>
@@ -22,25 +24,23 @@
         </Grid.RowDefinitions>
 
         <!--region Header-->
-        <GroupBox Grid.Row="0" Margin="3">
+        <GroupBox Grid.Row="0" Margin="3" BorderBrush="Transparent" Style="{x:Null}">
             <GroupBox.Header>
-                <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
-                           Text="Дом"/>
+                <TextBlock Text="Дом" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
             </GroupBox.Header>
-            <TextBlock Style="{StaticResource TextBoxDetailInfoStyle}" 
+            <TextBlock Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
                        Text="{Binding HouseInfoText}"
                        VerticalAlignment="Center"/>
         </GroupBox>
         <!--endregion-->
 
         <!--region InputData-->
-        <GroupBox Name="GB_InputData" Grid.Row="1" Margin="3">
+        <GroupBox Name="GB_InputData" Grid.Row="1" Margin="3" Style="{x:Null}">
             <GroupBox.Header>
-                <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
-                   Text="Квартира"/>
+                <TextBlock Text="Квартира" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
             </GroupBox.Header>
 
-            <Grid Name="Grid_InputData">
+            <Grid Name="Grid_InputData" Margin="2">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -197,10 +197,9 @@
         </GroupBox>
         <!--endregion-->
         <!--region Photos-->
-        <GroupBox Name ="GP_Photos" Grid.Row="2" Margin="3">
+        <GroupBox Name ="GP_Photos" Grid.Row="2" Margin="3" Style="{x:Null}">
             <GroupBox.Header>
-                <TextBlock Style="{StaticResource GroupBoxHeaderTextStyle}"
-                   Text="Фото"/>
+                <TextBlock Text="Фото" Style="{StaticResource GroupBoxHeaderTextStyle}"/>
             </GroupBox.Header>
             
             <Grid Name="Grid_Photo">
@@ -226,18 +225,33 @@
                 <StackPanel Name="StP_PhotoButtons" Grid.Column="1" Orientation="Vertical"
                             VerticalAlignment="Center">
                     
-                    <Button Name="Btn_AddPhoto" Content="Добавить"
+                    <Button Name="Btn_AddPhoto"
                             Style="{StaticResource ButtonSaveCancelStyle}"
                             Margin="4"
                             Command="{Binding AddPhotoCommnad}"
-                            />
-                    <Button Name="Btn_DeletePhoto" Content="Удалить"
+                            BorderBrush="DarkBlue">
+                        <Button.Content>
+                            <mdc:PackIcon Kind="ImagePlus" Width="24" Height="24"
+                                          Foreground="{Binding ElementName=Btn_AddPhoto,
+                                                       Path=BorderBrush}"  
+                                          FontWeight="Bold"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Name="Btn_DeletePhoto"
                             Style="{StaticResource ButtonSaveCancelStyle}"
+                            BorderBrush="DarkRed"
                             Margin="4"
                             Command="{Binding DeletePhotoCommnad}"
                             CommandParameter="{Binding ElementName=ListBox_Photos,
-                                               Path=SelectedItem}"/>
-                    
+                                               Path=SelectedItem}">
+                        <Button.Content>
+                            <mdc:PackIcon Kind="ImageMinus" Width="24" Height="24"
+                                          Foreground="{Binding ElementName=Btn_DeletePhoto,
+                                                       Path=BorderBrush}" 
+                                          FontWeight="Bold"/>
+                        </Button.Content>
+                    </Button>
+
                 </StackPanel>
             </Grid>
         </GroupBox>
@@ -246,13 +260,30 @@
         <UniformGrid Name="UnGrid_Buttons" Grid.Row="7" Grid.ColumnSpan="2" 
              Rows="1" Columns="2">
             
-            <Button Name="Btn_SavePhoto" Grid.Column="1" Content="Сохранить"
-            Style="{StaticResource ButtonSaveCancelStyle}"
-            Command="ApplicationCommands.Save"/>
-            
-            <Button Name="Btn_Cancel" Grid.Column="2" Content="Выход"
+            <Button Name="Btn_SavePhoto" Grid.Column="1"
                     Style="{StaticResource ButtonSaveCancelStyle}"
-                    Command="cmd:WindowCommands.Exit"/>
+                    Command="ApplicationCommands.Save"
+                    BorderBrush="DarkGreen"
+                    >
+                <Button.Content>
+                    <mdc:PackIcon Kind="ContentSaveAdd" Width="24" Height="24"
+                                  Foreground="{Binding ElementName=Btn_SavePhoto,
+                                               Path=BorderBrush}" 
+                                  FontWeight="Bold"/>
+                </Button.Content>
+            </Button>
+            
+            <Button Name="Btn_Cancel" Grid.Column="2"
+                    Style="{StaticResource ButtonSaveCancelStyle}"
+                    Command="cmd:WindowCommands.Exit"
+                    BorderBrush="DarkRed">
+                <Button.Content>
+                    <mdc:PackIcon Kind="CloseBox" Width="24" Height="24"
+                                  Foreground="{Binding ElementName=Btn_Cancel,
+                                                Path=BorderBrush}" 
+                                  FontWeight="Bold"/>
+                </Button.Content>
+            </Button>
 
         </UniformGrid>
 

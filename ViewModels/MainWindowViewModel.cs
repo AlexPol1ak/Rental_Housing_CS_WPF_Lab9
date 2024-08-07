@@ -204,6 +204,7 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
         private ICommand _deleteCommand;
         private ICommand _editCommand;
         private ICommand _addCommand;
+        private ICommand _exitCommand;
         private Func<object, bool> _hasObject => 
             (id)=> SelectedHouses != null || SelectedApartment != null;
 
@@ -216,6 +217,9 @@ namespace CS_WPF_Lab9_Rental_Housing.ViewModels
 
         public ICommand AddComand => _addCommand ??=
             new RelayCommand(addButtonExecuted);
+
+        public ICommand ExitCommand => _exitCommand ??=
+            new RelayCommand((ob) => Application.Current.Shutdown(0));
 
         /// <summary>
         /// Executor for the AddCommand command 
