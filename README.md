@@ -6,18 +6,26 @@
 
 При выборе дома отображается подробная информация о доме и список доступных в нем квартир. Выбор квартиры отображает подробную информацию о доме и квартире, а также фотографии этой квартиры, которые можно просматривать с помощью интерактивных кнопок. Навигационные кнопки фотографий доступны, если курсор находится над блоком информации и если есть фотографии для отображения. Кнопки не доступны, если курсор не находится над блоком информации или фотографий нет. Если пролистан весь список фотографий, кнопки деактивируются.
 
-![Снимок экрана 1](https://github.com/user-attachments/assets/5169f4d9-723d-460a-aa7e-b043de478533)
-![Снимок экрана 2](https://github.com/user-attachments/assets/df3098ba-93d5-44d1-9bbb-c0d266f1d802)
-![Снимок экрана 3](https://github.com/user-attachments/assets/7ea9a599-dc6a-4556-b070-9aa7b93e10ee)
-![Снимок экрана 4](https://github.com/user-attachments/assets/e1962cf0-c358-416c-8d5f-8c0257945eaa)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5169f4d9-723d-460a-aa7e-b043de478533" alt="Снимок экрана 1" width="50%">
+  <img src="https://github.com/user-attachments/assets/df3098ba-93d5-44d1-9bbb-c0d266f1d802" alt="Снимок экрана 2" width="50%">
+  <img src="https://github.com/user-attachments/assets/7ea9a599-dc6a-4556-b070-9aa7b93e10ee" alt="Снимок экрана 3" width="50%">
+  <img src="https://github.com/user-attachments/assets/e1962cf0-c358-416c-8d5f-8c0257945eaa" alt="Снимок экрана 4" width="50%">
+</p>
 
-## Многоуровневая архитектура приложения
+## Архитектура
 
-Приложение разделено на 4 проекта:
+Приложение реализовано с использованием многоуровневой архитектуры и паттернов проектирования. Оно разделено на 4 проекта:
 1. **Приложение** - [CS_WPF_Lab9_Rental_Housing](https://github.com/AlexPol1ak/CS_WPF_Lab9_Rental_Housing)
 2. **Бизнес логика** - [CS_WPF_Lab9_Rental_Housing.Business](https://github.com/AlexPol1ak/CS_WPF_Lab9_Rental_Housing.Business)
 3. **Доступ к базе данных** - [CS_WPF_Lab9_Rental_Housing.DAL](https://github.com/AlexPol1ak/CS_WPF_Lab9_Rental_Housing.DAL)
 4. **Сущности приложения** - [CS_WPF_Lab9_Rental_Housing.Domain](https://github.com/AlexPol1ak/CS_WPF_Lab9_Rental_Housing.Domain)
+
+### Используемые паттерны проектирования
+
+- **MVVM (Model-View-ViewModel)**: Используется для разделения представления и логики приложения, улучшая тестируемость и расширяемость.
+- **Repository**: Обеспечивает абстракцию доступа к данным и управление сущностями, изолируя бизнес-логику от специфики базы данных.
+- **Unit of Work**: Управляет транзакциями и изменениями в данных, позволяя выполнять пакетные обновления и обеспечивать целостность данных.
 
 ## Используемые пакеты
 
