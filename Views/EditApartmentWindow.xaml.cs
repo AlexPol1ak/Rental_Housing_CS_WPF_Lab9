@@ -1,25 +1,12 @@
 ﻿using CS_WPF_Lab9_Rental_Housing.Commands;
 using CS_WPF_Lab9_Rental_Housing.Domain.Entities;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CS_WPF_Lab9_Rental_Housing.Views
 {
@@ -60,7 +47,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         {
             this.Closing += EditApartmentWindowClosing;
             TitleTextAp = "Добавить квартиру";
-            InitializeComponent();        
+            InitializeComponent();
             SelectedHouse = house;
             SelectedApartment = new Apartment();
             SelectedApartment.House = house;
@@ -79,7 +66,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             InitializeComponent();
             SelectedHouse = apartment.House;
             SelectedApartment = apartment;
-            installSettings();           
+            installSettings();
         }
 
         /// <summary>
@@ -103,7 +90,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         #region Dependency properties
         public string HouseInfoText
         {
-            get { return (string) GetValue(HouseInfoTextProperty); }
+            get { return (string)GetValue(HouseInfoTextProperty); }
             set { SetValue(HouseInfoTextProperty, value); }
         }
         public static readonly DependencyProperty HouseInfoTextProperty =
@@ -112,7 +99,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
 
         public string TitleTextAp
         {
-            get { return(string) GetValue(TitleTextApProperty); }
+            get { return (string)GetValue(TitleTextApProperty); }
             set { SetValue(TitleTextApProperty, value); }
         }
         public static readonly DependencyProperty TitleTextApProperty =
@@ -226,13 +213,13 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                 (obj) => { return Photos.Count < 10; }
             );
 
-      
+
         private ICommand _deletePhohoCommnad;
         public ICommand DeletePhotoCommnad => _deletePhohoCommnad ??= new RelayCommand
             (
                 deletePhotoExecuted,
                 (obj) => { return obj != null && Photos.Count > 0; }
-                
+
             );
 
         /// <summary>
@@ -254,17 +241,17 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                 if (openFileDialog.FileNames.Length + Photos.Count > 10)
                 {
                     MessageBox.Show(
-                        "Общее количество фотографий не должно привышать 10", 
-                        "Загрузка фотографий", 
+                        "Общее количество фотографий не должно привышать 10",
+                        "Загрузка фотографий",
                         MessageBoxButton.OK, MessageBoxImage.Information
                         );
                 }
                 else
                 {
-                    if(openFileDialog.FileNames.Length > 0)
+                    if (openFileDialog.FileNames.Length > 0)
                     {
-                        foreach(string fileName in openFileDialog.FileNames)
-                        {   
+                        foreach (string fileName in openFileDialog.FileNames)
+                        {
                             // Send files to be saved.
                             addNewPhoto(fileName);
                         }
@@ -279,8 +266,8 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
         /// <param name="obj">Parameter from ListBox</param>
         private void deletePhotoExecuted(object obj)
         {
-            Photo photo = (Photo) obj;
-            deletePhoto(photo);          
+            Photo photo = (Photo)obj;
+            deletePhoto(photo);
         }
         #endregion
 
@@ -310,9 +297,9 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
 
             //Photo transfers.
             SelectedApartment.Photos.Clear();
-            if(Photos.Count > 0)
+            if (Photos.Count > 0)
             {
-                foreach(Photo photo in Photos)
+                foreach (Photo photo in Photos)
                 {
                     SelectedApartment.Photos.Add(photo);
                 }
@@ -320,7 +307,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             // Deleting photos moved to a deleted collection
             if (tempDeletedPhotoFileINfo.Count > 0)
             {
-                foreach(FileInfo file in tempDeletedPhotoFileINfo) { file.Delete(); }
+                foreach (FileInfo file in tempDeletedPhotoFileINfo) { file.Delete(); }
             }
         }
 
@@ -392,10 +379,10 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             // Remove a photo from the collection of newly added photos,
             // if they are there (If photos are added in the same window)
             if (tempAddedNewPhoto.Contains(photo)) tempAddedNewPhoto.Remove(photo);
-            if(tempAddedNewPhotoFileInfo.Contains(photoFileInfo)) tempAddedNewPhotoFileInfo.Remove(photoFileInfo);
+            if (tempAddedNewPhotoFileInfo.Contains(photoFileInfo)) tempAddedNewPhotoFileInfo.Remove(photoFileInfo);
             // Add photos to the temporary collection of photos to be deleted.
             if (!tempDeletedPhoto.Contains(photo)) tempDeletedPhoto.Add(photo);
-            if(!tempAddedNewPhotoFileInfo.Contains(photoFileInfo)) tempDeletedPhotoFileINfo.Add(photoFileInfo);
+            if (!tempAddedNewPhotoFileInfo.Contains(photoFileInfo)) tempDeletedPhotoFileINfo.Add(photoFileInfo);
 
             return true;
         }
@@ -433,7 +420,7 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
                         break;
 
                     case nameof(Floor):
-                        if (Floor <=0)
+                        if (Floor <= 0)
                             error = "Этаж должен быть не отрицательным числом и не равным 0.";
                         break;
 
@@ -464,6 +451,6 @@ namespace CS_WPF_Lab9_Rental_Housing.Views
             }
         }
         #endregion
-        
+
     }
 }
